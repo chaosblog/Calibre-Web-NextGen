@@ -109,7 +109,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
         <button type="button" className={styles.drawerClose} onClick={onClose} aria-label={t('Close menu')}>
           <X size={20} aria-hidden="true" focusable={false} />
         </button>
-        <ul className={styles.list}>
+        <ul className={styles.list} role="list">
           {navEntries.map(({ href, label, icon: Icon, exact }) => {
             const active = isActive(location, href, exact);
             return (
@@ -120,7 +120,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
                   aria-current={active ? 'page' : undefined}
                   onClick={onNavigate}
                 >
-                  <Icon size={18} className={styles.icon} />
+                  <Icon size={18} className={styles.icon} aria-hidden="true" focusable={false} />
                   <span>{t(label)}</span>
                 </Link>
               </li>
@@ -129,7 +129,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
         </ul>
 
         {discoverEntries.length > 0 && (
-          <ul className={styles.list}>
+          <ul className={styles.list} role="list">
             {discoverEntries.map(({ href, label, icon: Icon }) => {
               const active = isActive(location, href, true);
               return (
@@ -140,7 +140,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
                     aria-current={active ? 'page' : undefined}
                     onClick={onNavigate}
                   >
-                    <Icon size={18} className={styles.icon} />
+                    <Icon size={18} className={styles.icon} aria-hidden="true" focusable={false} />
                     <span>{t(label)}</span>
                   </Link>
                 </li>
@@ -150,7 +150,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
         )}
 
         {(canUpload || isAdmin) && (
-          <ul className={styles.list}>
+          <ul className={styles.list} role="list">
             {canUpload && (
               <li>
                 <Link
@@ -159,7 +159,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
                   aria-current={isActive(location, '/upload', true) ? 'page' : undefined}
                   onClick={onNavigate}
                 >
-                  <UploadCloud size={18} className={styles.icon} />
+                  <UploadCloud size={18} className={styles.icon} aria-hidden="true" focusable={false} />
                   <span>{t('Upload')}</span>
                 </Link>
               </li>
@@ -172,7 +172,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
                   aria-current={isActive(location, '/admin', true) ? 'page' : undefined}
                   onClick={onNavigate}
                 >
-                  <Shield size={18} className={styles.icon} />
+                  <Shield size={18} className={styles.icon} aria-hidden="true" focusable={false} />
                   <span>{t('Admin')}</span>
                 </Link>
               </li>
@@ -187,12 +187,12 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
             className={isActive(location, '/shelves', true) ? styles.sectionTitleActive : styles.sectionTitle}
             onClick={onNavigate}
           >
-            <BookCopy size={16} className={styles.icon} />
+            <BookCopy size={16} className={styles.icon} aria-hidden="true" focusable={false} />
             <span>{t('Shelves')}</span>
           </Link>
         </div>
 
-        <ul className={styles.list}>
+        <ul className={styles.list} role="list">
           {SYSTEM.map(({ href, label, icon: Icon }) => {
             const active = isActive(location, href, true);
             return (
@@ -203,7 +203,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
                   aria-current={active ? 'page' : undefined}
                   onClick={onNavigate}
                 >
-                  <Icon size={18} className={styles.icon} />
+                  <Icon size={18} className={styles.icon} aria-hidden="true" focusable={false} />
                   <span>{t(label)}</span>
                 </Link>
               </li>
@@ -213,7 +213,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
 
         {/* Power features served by the legacy UI under the hybrid cutover —
             plain <a> so they leave the SPA. Reachable, not omitted. */}
-        <ul className={styles.list}>
+        <ul className={styles.list} role="list">
           {showList && (
             <li>
               <Link
@@ -222,7 +222,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
                 aria-current={isActive(location, '/table', true) ? 'page' : undefined}
                 onClick={onNavigate}
               >
-                <Table2 size={18} className={styles.icon} />
+                <Table2 size={18} className={styles.icon} aria-hidden="true" focusable={false} />
                 <span>{t('Table view')}</span>
               </Link>
             </li>
@@ -234,7 +234,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
               aria-current={isActive(location, '/magic', true) ? 'page' : undefined}
               onClick={onNavigate}
             >
-              <Wand2 size={18} className={styles.icon} />
+              <Wand2 size={18} className={styles.icon} aria-hidden="true" focusable={false} />
               <span>{t('Smart shelves')}</span>
             </Link>
           </li>
@@ -263,7 +263,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
                 aria-current={isActive(location, '/duplicates', true) ? 'page' : undefined}
                 onClick={onNavigate}
               >
-                <Files size={18} className={styles.icon} />
+                <Files size={18} className={styles.icon} aria-hidden="true" focusable={false} />
                 <span>{t('Duplicates')}</span>
               </Link>
             </li>
@@ -271,7 +271,7 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
         </ul>
 
         {shelves.length > 0 && (
-          <ul className={styles.shelfList}>
+          <ul className={styles.shelfList} role="list">
             {shelves.map((s) => {
               const href = `/shelf/${s.id}`;
               const active = location === href;
