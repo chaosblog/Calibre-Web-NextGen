@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web NextGen\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-04 13:23+0000\n"
+"POT-Creation-Date: 2026-07-04 14:31+0000\n"
 "PO-Revision-Date: 2020-04-29 01:20+0400\n"
 "Last-Translator: ZIZA\n"
 "Language-Team: \n"
@@ -2685,6 +2685,43 @@ msgstr "Поиск в библиотеке"
 msgid "Go to Upload"
 msgstr "Загрузить"
 
+#: cps/spa_strings.py:81
+#, fuzzy
+msgid "Editions"
+msgstr "Действия"
+
+#: cps/spa_strings.py:82
+#, fuzzy
+msgid "Back to results"
+msgstr "Поисковый запрос:"
+
+#: cps/spa_strings.py:83
+msgid "No editions found for this book."
+msgstr ""
+
+#: cps/spa_strings.py:85
+#, fuzzy
+msgid "View all details"
+msgstr "Подробнее о книге"
+
+#: cps/spa_strings.py:86
+msgid "Result details"
+msgstr ""
+
+#: cps/spa_strings.py:87 cps/templates/detail.html:1012
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr "Опубликовано"
+
+#: cps/spa_strings.py:88 cps/templates/cwa_settings.html:1145
+#, fuzzy
+msgid "Format"
+msgstr "Конечный формат"
+
+#: cps/spa_strings.py:89 cps/templates/book_edit.html:462
+msgid "Source"
+msgstr "Источник"
+
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
 msgid "Tasks"
@@ -4243,10 +4280,6 @@ msgstr "Ошибка поиска!"
 #: cps/templates/book_edit.html:458
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Результатов не найдено! Попробуйте другое ключевое слово."
-
-#: cps/templates/book_edit.html:462
-msgid "Source"
-msgstr "Источник"
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:112
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
@@ -6674,11 +6707,6 @@ msgstr ""
 msgid "Consider book publisher when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1145
-#, fuzzy
-msgid "Format"
-msgstr "Конечный формат"
-
 #: cps/templates/cwa_settings.html:1146
 msgid "Consider file format when detecting duplicates"
 msgstr ""
@@ -7119,10 +7147,6 @@ msgstr ""
 #, fuzzy
 msgid "File sizes"
 msgstr "Размеры шрифта"
-
-#: cps/templates/detail.html:1012 cps/templates/listenmp3.html:111
-msgid "Published"
-msgstr "Опубликовано"
 
 #: cps/templates/detail.html:1018
 #, fuzzy

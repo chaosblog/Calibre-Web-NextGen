@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web NextGen\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-04 13:23+0000\n"
+"POT-Creation-Date: 2026-07-04 14:31+0000\n"
 "PO-Revision-Date: 2025-08-11 07:03+0000\n"
 "Last-Translator: Andrej Kralj\n"
 "Language-Team: Slovenian\n"
@@ -2638,6 +2638,43 @@ msgstr "Iskanje po knjižnici"
 msgid "Go to Upload"
 msgstr "Naloži"
 
+#: cps/spa_strings.py:81
+#, fuzzy
+msgid "Editions"
+msgstr "Dejanja"
+
+#: cps/spa_strings.py:82
+#, fuzzy
+msgid "Back to results"
+msgstr "Iskalni izraz:"
+
+#: cps/spa_strings.py:83
+msgid "No editions found for this book."
+msgstr ""
+
+#: cps/spa_strings.py:85
+#, fuzzy
+msgid "View all details"
+msgstr "Podrobnosti o knjigi"
+
+#: cps/spa_strings.py:86
+msgid "Result details"
+msgstr ""
+
+#: cps/spa_strings.py:87 cps/templates/detail.html:1012
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr "Objavljeno"
+
+#: cps/spa_strings.py:88 cps/templates/cwa_settings.html:1145
+#, fuzzy
+msgid "Format"
+msgstr "Nalaganje vrsta"
+
+#: cps/spa_strings.py:89 cps/templates/book_edit.html:462
+msgid "Source"
+msgstr "Vir:"
+
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
 msgid "Tasks"
@@ -4175,10 +4212,6 @@ msgstr "Napaka pri iskanju!"
 #: cps/templates/book_edit.html:458
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Ni najden noben rezultat! Poskusite z drugo ključno besedo."
-
-#: cps/templates/book_edit.html:462
-msgid "Source"
-msgstr "Vir:"
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:112
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
@@ -6638,11 +6671,6 @@ msgstr "Upoštevaj zbirke (serije) knjig pri zaznavanju dvojnikov"
 msgid "Consider book publisher when detecting duplicates"
 msgstr "Upoštevaj založnika knjig pri zaznavanju dvojnikov"
 
-#: cps/templates/cwa_settings.html:1145
-#, fuzzy
-msgid "Format"
-msgstr "Nalaganje vrsta"
-
 #: cps/templates/cwa_settings.html:1146
 msgid "Consider file format when detecting duplicates"
 msgstr "Upoštevaj format datoteke pri zaznavanju dvojnikov"
@@ -7095,10 +7123,6 @@ msgstr "Zadnjič spremenjeno"
 #, fuzzy
 msgid "File sizes"
 msgstr "Velikosti pisave"
-
-#: cps/templates/detail.html:1012 cps/templates/listenmp3.html:111
-msgid "Published"
-msgstr "Objavljeno"
 
 #: cps/templates/detail.html:1018
 #, fuzzy

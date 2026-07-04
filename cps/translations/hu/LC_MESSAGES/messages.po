@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-04 13:23+0000\n"
+"POT-Creation-Date: 2026-07-04 14:31+0000\n"
 "PO-Revision-Date: 2026-05-12 00:06+0200\n"
 "Last-Translator: Gabor L. <nom@il.thx>\n"
 "Language-Team: \n"
@@ -2619,6 +2619,42 @@ msgstr "Keresés könyvtárban"
 msgid "Go to Upload"
 msgstr "Feltöltés"
 
+#: cps/spa_strings.py:81
+#, fuzzy
+msgid "Editions"
+msgstr "Műveletek"
+
+#: cps/spa_strings.py:82
+#, fuzzy
+msgid "Back to results"
+msgstr "Keresőkifejezés"
+
+#: cps/spa_strings.py:83
+msgid "No editions found for this book."
+msgstr ""
+
+#: cps/spa_strings.py:85
+#, fuzzy
+msgid "View all details"
+msgstr "Könyv részletei"
+
+#: cps/spa_strings.py:86
+msgid "Result details"
+msgstr ""
+
+#: cps/spa_strings.py:87 cps/templates/detail.html:1012
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr "Kiadva"
+
+#: cps/spa_strings.py:88 cps/templates/cwa_settings.html:1145
+msgid "Format"
+msgstr "Fájlformátum"
+
+#: cps/spa_strings.py:89 cps/templates/book_edit.html:462
+msgid "Source"
+msgstr "Forrás"
+
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
 msgid "Tasks"
@@ -4138,10 +4174,6 @@ msgstr "Keresési hiba!"
 #: cps/templates/book_edit.html:458
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Nincs találat! Próbálj másik kulcsszót."
-
-#: cps/templates/book_edit.html:462
-msgid "Source"
-msgstr "Forrás"
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:112
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
@@ -6593,10 +6625,6 @@ msgstr "Vegye figyelembe a könyvsorozatot a duplikátumok észlelésekor"
 msgid "Consider book publisher when detecting duplicates"
 msgstr "Vegye figyelembe a kiadót a duplikátumok észlelésekor"
 
-#: cps/templates/cwa_settings.html:1145
-msgid "Format"
-msgstr "Fájlformátum"
-
 #: cps/templates/cwa_settings.html:1146
 msgid "Consider file format when detecting duplicates"
 msgstr "Vegye figyelembe a fájlformátumot a duplikátumok észlelésekor"
@@ -7044,10 +7072,6 @@ msgstr "Utoljára módosítva"
 #: cps/templates/detail.html:914
 msgid "File sizes"
 msgstr "Fájl mérete"
-
-#: cps/templates/detail.html:1012 cps/templates/listenmp3.html:111
-msgid "Published"
-msgstr "Kiadva"
 
 #: cps/templates/detail.html:1018
 msgid "KOReader Progress"

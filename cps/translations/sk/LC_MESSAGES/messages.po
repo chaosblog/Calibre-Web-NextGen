@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web NextGen\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-04 13:23+0000\n"
+"POT-Creation-Date: 2026-07-04 14:31+0000\n"
 "PO-Revision-Date: 2023-11-01 06:12+0100\n"
 "Last-Translator: Branislav Hanáček <brango@brango.sk>\n"
 "Language-Team: \n"
@@ -2577,6 +2577,43 @@ msgstr "Prehľadávať knižnicu"
 msgid "Go to Upload"
 msgstr "Nahrať"
 
+#: cps/spa_strings.py:81
+#, fuzzy
+msgid "Editions"
+msgstr "Akcie"
+
+#: cps/spa_strings.py:82
+#, fuzzy
+msgid "Back to results"
+msgstr "Vyhľadať výraz:"
+
+#: cps/spa_strings.py:83
+msgid "No editions found for this book."
+msgstr ""
+
+#: cps/spa_strings.py:85
+#, fuzzy
+msgid "View all details"
+msgstr "Detailu o knihe"
+
+#: cps/spa_strings.py:86
+msgid "Result details"
+msgstr ""
+
+#: cps/spa_strings.py:87 cps/templates/detail.html:1012
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr "Vydané"
+
+#: cps/spa_strings.py:88 cps/templates/cwa_settings.html:1145
+#, fuzzy
+msgid "Format"
+msgstr "Formát nahrávania"
+
+#: cps/spa_strings.py:89 cps/templates/book_edit.html:462
+msgid "Source"
+msgstr "Zdroj"
+
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
 msgid "Tasks"
@@ -4105,10 +4142,6 @@ msgstr "Chyba pri vyhľadávaní!"
 #: cps/templates/book_edit.html:458
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Nič sa nenaslo! Skúste, prosím iné kľúčové slovo."
-
-#: cps/templates/book_edit.html:462
-msgid "Source"
-msgstr "Zdroj"
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:112
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
@@ -6429,11 +6462,6 @@ msgstr ""
 msgid "Consider book publisher when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1145
-#, fuzzy
-msgid "Format"
-msgstr "Formát nahrávania"
-
 #: cps/templates/cwa_settings.html:1146
 msgid "Consider file format when detecting duplicates"
 msgstr ""
@@ -6862,10 +6890,6 @@ msgstr ""
 #, fuzzy
 msgid "File sizes"
 msgstr "Veľkosť písma"
-
-#: cps/templates/detail.html:1012 cps/templates/listenmp3.html:111
-msgid "Published"
-msgstr "Vydané"
 
 #: cps/templates/detail.html:1018
 #, fuzzy

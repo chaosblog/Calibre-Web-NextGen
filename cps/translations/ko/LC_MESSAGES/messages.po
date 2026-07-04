@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web NextGen\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-04 13:23+0000\n"
+"POT-Creation-Date: 2026-07-04 14:31+0000\n"
 "PO-Revision-Date: 2025-09-08 00:53+0900\n"
 "Last-Translator: limeade23 <admin@limeade.me>\n"
 "Language-Team: Korean <>\n"
@@ -2528,6 +2528,43 @@ msgstr "검색"
 msgid "Go to Upload"
 msgstr "업로드"
 
+#: cps/spa_strings.py:81
+#, fuzzy
+msgid "Editions"
+msgstr "작업"
+
+#: cps/spa_strings.py:82
+#, fuzzy
+msgid "Back to results"
+msgstr "검색어:"
+
+#: cps/spa_strings.py:83
+msgid "No editions found for this book."
+msgstr ""
+
+#: cps/spa_strings.py:85
+#, fuzzy
+msgid "View all details"
+msgstr "책 상세정보"
+
+#: cps/spa_strings.py:86
+msgid "Result details"
+msgstr ""
+
+#: cps/spa_strings.py:87 cps/templates/detail.html:1012
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr "발행일"
+
+#: cps/spa_strings.py:88 cps/templates/cwa_settings.html:1145
+#, fuzzy
+msgid "Format"
+msgstr "결과 형식"
+
+#: cps/spa_strings.py:89 cps/templates/book_edit.html:462
+msgid "Source"
+msgstr "출처"
+
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
 msgid "Tasks"
@@ -4046,10 +4083,6 @@ msgstr "오류가 발생했습니다!"
 #: cps/templates/book_edit.html:458
 msgid "No Result(s) found! Please try another keyword."
 msgstr "검색 결과가 없습니다. 다른 검색어로 검색해 보세요."
-
-#: cps/templates/book_edit.html:462
-msgid "Source"
-msgstr "출처"
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:112
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
@@ -6372,11 +6405,6 @@ msgstr ""
 msgid "Consider book publisher when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1145
-#, fuzzy
-msgid "Format"
-msgstr "결과 형식"
-
 #: cps/templates/cwa_settings.html:1146
 msgid "Consider file format when detecting duplicates"
 msgstr ""
@@ -6805,10 +6833,6 @@ msgstr ""
 #, fuzzy
 msgid "File sizes"
 msgstr "글자 크기"
-
-#: cps/templates/detail.html:1012 cps/templates/listenmp3.html:111
-msgid "Published"
-msgstr "발행일"
 
 #: cps/templates/detail.html:1018
 #, fuzzy

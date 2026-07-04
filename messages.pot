@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web Automated v4.0.6\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-04 13:23+0000\n"
+"POT-Creation-Date: 2026-07-04 14:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2457,6 +2457,39 @@ msgstr ""
 msgid "Go to Upload"
 msgstr ""
 
+#: cps/spa_strings.py:81
+msgid "Editions"
+msgstr ""
+
+#: cps/spa_strings.py:82
+msgid "Back to results"
+msgstr ""
+
+#: cps/spa_strings.py:83
+msgid "No editions found for this book."
+msgstr ""
+
+#: cps/spa_strings.py:85
+msgid "View all details"
+msgstr ""
+
+#: cps/spa_strings.py:86
+msgid "Result details"
+msgstr ""
+
+#: cps/spa_strings.py:87 cps/templates/detail.html:1012
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr ""
+
+#: cps/spa_strings.py:88 cps/templates/cwa_settings.html:1145
+msgid "Format"
+msgstr ""
+
+#: cps/spa_strings.py:89 cps/templates/book_edit.html:462
+msgid "Source"
+msgstr ""
+
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
 msgid "Tasks"
@@ -3908,10 +3941,6 @@ msgstr ""
 
 #: cps/templates/book_edit.html:458
 msgid "No Result(s) found! Please try another keyword."
-msgstr ""
-
-#: cps/templates/book_edit.html:462
-msgid "Source"
 msgstr ""
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:112
@@ -6154,10 +6183,6 @@ msgstr ""
 msgid "Consider book publisher when detecting duplicates"
 msgstr ""
 
-#: cps/templates/cwa_settings.html:1145
-msgid "Format"
-msgstr ""
-
 #: cps/templates/cwa_settings.html:1146
 msgid "Consider file format when detecting duplicates"
 msgstr ""
@@ -6565,10 +6590,6 @@ msgstr ""
 
 #: cps/templates/detail.html:914
 msgid "File sizes"
-msgstr ""
-
-#: cps/templates/detail.html:1012 cps/templates/listenmp3.html:111
-msgid "Published"
 msgstr ""
 
 #: cps/templates/detail.html:1018

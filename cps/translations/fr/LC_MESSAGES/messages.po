@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web NextGen\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-04 13:23+0000\n"
+"POT-Creation-Date: 2026-07-04 14:31+0000\n"
 "PO-Revision-Date: 2025-11-17 21:51+0100\n"
 "Last-Translator: Tex <tex@grosist.fr>\n"
 "Language-Team: \n"
@@ -2711,6 +2711,42 @@ msgstr "Chercher dans librairie"
 msgid "Go to Upload"
 msgstr "Téléverser"
 
+#: cps/spa_strings.py:81
+#, fuzzy
+msgid "Editions"
+msgstr "Actions"
+
+#: cps/spa_strings.py:82
+#, fuzzy
+msgid "Back to results"
+msgstr "Requête de recherche"
+
+#: cps/spa_strings.py:83
+msgid "No editions found for this book."
+msgstr ""
+
+#: cps/spa_strings.py:85
+#, fuzzy
+msgid "View all details"
+msgstr "Voir les détails du livre"
+
+#: cps/spa_strings.py:86
+msgid "Result details"
+msgstr ""
+
+#: cps/spa_strings.py:87 cps/templates/detail.html:1012
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr "Publié"
+
+#: cps/spa_strings.py:88 cps/templates/cwa_settings.html:1145
+msgid "Format"
+msgstr "Format"
+
+#: cps/spa_strings.py:89 cps/templates/book_edit.html:462
+msgid "Source"
+msgstr "Source"
+
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
 msgid "Tasks"
@@ -4237,10 +4273,6 @@ msgstr "Erreur lors de la recherche!"
 #: cps/templates/book_edit.html:458
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Aucun résultat. Veuillez essayer avec un nouveau mot clé."
-
-#: cps/templates/book_edit.html:462
-msgid "Source"
-msgstr "Source"
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:112
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
@@ -6719,10 +6751,6 @@ msgstr ""
 msgid "Consider book publisher when detecting duplicates"
 msgstr "Prendre en compte l'éditeur du livre lors de la détection des doublons"
 
-#: cps/templates/cwa_settings.html:1145
-msgid "Format"
-msgstr "Format"
-
 #: cps/templates/cwa_settings.html:1146
 msgid "Consider file format when detecting duplicates"
 msgstr "Tenir compte du format de fichier lors de la détection des doublons"
@@ -7169,10 +7197,6 @@ msgstr "Dernière modification"
 #: cps/templates/detail.html:914
 msgid "File sizes"
 msgstr "Tailles de fichiers"
-
-#: cps/templates/detail.html:1012 cps/templates/listenmp3.html:111
-msgid "Published"
-msgstr "Publié"
 
 #: cps/templates/detail.html:1018
 msgid "KOReader Progress"

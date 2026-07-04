@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web NextGen\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-04 13:23+0000\n"
+"POT-Creation-Date: 2026-07-04 14:31+0000\n"
 "PO-Revision-Date: 2026-04-06 17:03+0000\n"
 "Last-Translator: Manuel Drescher\n"
 "Language-Team: German\n"
@@ -2636,6 +2636,42 @@ msgstr "Bibliothek durchsuchen"
 msgid "Go to Upload"
 msgstr "Upload"
 
+#: cps/spa_strings.py:81
+#, fuzzy
+msgid "Editions"
+msgstr "Aktionen"
+
+#: cps/spa_strings.py:82
+#, fuzzy
+msgid "Back to results"
+msgstr "Suchanfrage"
+
+#: cps/spa_strings.py:83
+msgid "No editions found for this book."
+msgstr ""
+
+#: cps/spa_strings.py:85
+#, fuzzy
+msgid "View all details"
+msgstr "Buchdetails anzeigen"
+
+#: cps/spa_strings.py:86
+msgid "Result details"
+msgstr ""
+
+#: cps/spa_strings.py:87 cps/templates/detail.html:1012
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr "Herausgabedatum"
+
+#: cps/spa_strings.py:88 cps/templates/cwa_settings.html:1145
+msgid "Format"
+msgstr "Zielformat"
+
+#: cps/spa_strings.py:89 cps/templates/book_edit.html:462
+msgid "Source"
+msgstr "Quelle"
+
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
 msgid "Tasks"
@@ -4153,10 +4189,6 @@ msgstr "Fehler bei der Suche!"
 #: cps/templates/book_edit.html:458
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Keine Ergebnisse gefunden! Bitte ein anderes Schlüsselwort benutzen."
-
-#: cps/templates/book_edit.html:462
-msgid "Source"
-msgstr "Quelle"
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:112
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
@@ -6619,10 +6651,6 @@ msgstr "Buchreihen bei der Dublettenerkennung berücksichtigen"
 msgid "Consider book publisher when detecting duplicates"
 msgstr "Buchverlag bei der Dublettenerkennung berücksichtigen"
 
-#: cps/templates/cwa_settings.html:1145
-msgid "Format"
-msgstr "Zielformat"
-
 #: cps/templates/cwa_settings.html:1146
 msgid "Consider file format when detecting duplicates"
 msgstr "Dateiformat bei der Dublettenerkennung berücksichtigen"
@@ -7067,10 +7095,6 @@ msgstr "Zuletzt geändert"
 #: cps/templates/detail.html:914
 msgid "File sizes"
 msgstr "Dateigrößen"
-
-#: cps/templates/detail.html:1012 cps/templates/listenmp3.html:111
-msgid "Published"
-msgstr "Herausgabedatum"
 
 #: cps/templates/detail.html:1018
 msgid "KOReader Progress"
