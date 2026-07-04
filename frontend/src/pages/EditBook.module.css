@@ -140,6 +140,17 @@
   border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--sp-2) var(--sp-3);
   width: fit-content;
 }
+/* C3: the file input is visually hidden but stays focusable + in the tab order
+   (unlike hidden/display:none). The label mirrors the input's focus with a ring. */
+.fileInput {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.coverUploadBtn:focus-within {
+  outline: 2px solid var(--accent-ring);
+  outline-offset: 2px;
+  border-color: var(--accent);
+}
 .coverUrlRow { display: flex; gap: var(--sp-2); }
 .coverAdvanced { display: inline-flex; align-items: center; gap: var(--sp-1); color: var(--text-muted); font-size: var(--fs-sm); }
 .coverAdvanced:hover { color: var(--accent); }
