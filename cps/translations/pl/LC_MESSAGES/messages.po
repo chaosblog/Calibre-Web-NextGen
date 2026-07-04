@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2021-06-12 08:52)\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-03 12:59+0000\n"
+"POT-Creation-Date: 2026-07-04 13:23+0000\n"
 "PO-Revision-Date: 2021-06-12 15:35+0200\n"
 "Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
 "Language-Team: \n"
@@ -2447,39 +2447,153 @@ msgstr ""
 msgid "Manual (drag below)"
 msgstr ""
 
-#: cps/spa_strings.py:29 cps/templates/detail.html:634
+#: cps/spa_strings.py:35 cps/templates/detail.html:634
 #, fuzzy
 msgid "Read now"
 msgstr "Czytaj w przeglądarce"
 
-#: cps/spa_strings.py:33
+#: cps/spa_strings.py:39
 #, fuzzy
 msgid "Series order"
 msgstr "Indeks serii"
 
-#: cps/spa_strings.py:34
+#: cps/spa_strings.py:40
 #, fuzzy
 msgid "Series order (reverse)"
 msgstr "Cykl: %(serie)s"
 
-#: cps/spa_strings.py:38 cps/templates/detail.html:966
+#: cps/spa_strings.py:44 cps/templates/detail.html:966
 #: cps/templates/detail.html:967 cps/templates/detail.html:1532
 msgid "Add tag"
 msgstr ""
 
-#: cps/spa_strings.py:39
+#: cps/spa_strings.py:45
 msgid "New tag"
 msgstr ""
 
-#: cps/spa_strings.py:40 cps/templates/detail.html:958
+#: cps/spa_strings.py:46 cps/templates/detail.html:958
 #, fuzzy
 msgid "Remove tag"
 msgstr "Usuń"
 
-#: cps/spa_strings.py:41
+#: cps/spa_strings.py:47
 #, fuzzy, python-format
 msgid "Remove tag %(name)s"
 msgstr "Usuń"
+
+#: cps/spa_strings.py:54
+msgid "What's new"
+msgstr ""
+
+#: cps/spa_strings.py:55
+#, fuzzy
+msgid "Help — new updates available"
+msgstr "Aktualizacja nieudana:"
+
+#: cps/spa_strings.py:56
+#, fuzzy
+msgid "The latest features and fixes in Calibre-Web NextGen — newest first."
+msgstr "Katalog e-booków Calibre-Web Automated"
+
+#: cps/spa_strings.py:57
+#, fuzzy, python-brace-format
+msgid "{n} update"
+msgstr "Zaktualizowano ustawienia bazy danych"
+
+#: cps/spa_strings.py:58
+#, fuzzy, python-brace-format
+msgid "{n} updates"
+msgstr "Zaktualizowano ustawienia bazy danych"
+
+#: cps/spa_strings.py:59
+msgid "No release notes yet — check back after the next update."
+msgstr ""
+
+#: cps/spa_strings.py:60
+msgid ""
+"The interface is translated into your language; these update notes are "
+"written in English."
+msgstr ""
+
+#: cps/spa_strings.py:62 cps/templates/image.html:27
+#, fuzzy
+msgid "Reading"
+msgstr "Przeczytana"
+
+#: cps/spa_strings.py:63
+#, fuzzy
+msgid "Library"
+msgstr "W Bibliotece"
+
+#: cps/spa_strings.py:64
+msgid "Sync"
+msgstr ""
+
+#: cps/spa_strings.py:65 cps/templates/layout.html:340
+#: cps/templates/layout.html:376 cps/templates/user_edit.html:312
+#: cps/templates/user_edit.html:314
+msgid "Account"
+msgstr "Konto"
+
+# ???
+#: cps/spa_strings.py:66 cps/templates/admin.html:19
+#: cps/templates/layout.html:372 cps/templates/user_table.html:144
+msgid "Admin"
+msgstr "Panel administratora"
+
+#: cps/spa_strings.py:67
+msgid "Under the hood"
+msgstr ""
+
+#: cps/spa_strings.py:70
+#, fuzzy
+msgid "Open your library"
+msgstr "Przeszukaj bibliotekę"
+
+#: cps/spa_strings.py:71
+#, fuzzy
+msgid "Open your shelves"
+msgstr "Z wyłączeniem półek"
+
+#: cps/spa_strings.py:72
+#, fuzzy
+msgid "Manage sync & app passwords"
+msgstr "Zmień hasło"
+
+#: cps/spa_strings.py:73
+#, fuzzy
+msgid "Create an app password"
+msgstr "Zmień hasło"
+
+#: cps/spa_strings.py:74
+#, fuzzy
+msgid "Browse series"
+msgstr "Przeglądaj"
+
+#: cps/spa_strings.py:75
+msgid "Open Table view"
+msgstr ""
+
+# ???
+#: cps/spa_strings.py:76
+#, fuzzy
+msgid "Open Admin"
+msgstr "Panel administratora"
+
+#: cps/spa_strings.py:77
+#, fuzzy
+msgid "Browse Discover"
+msgstr "Odkrywaj"
+
+#: cps/spa_strings.py:78
+#, fuzzy
+msgid "Explore your library"
+msgstr "Przeszukaj bibliotekę"
+
+#: cps/spa_strings.py:79
+#, fuzzy
+msgid "Go to Upload"
+msgstr "Wysyłanie"
 
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
@@ -3325,12 +3439,6 @@ msgstr "Adres e-mail czytnika e-booków"
 #, fuzzy
 msgid "Send to eReader Subject"
 msgstr "Wyślij na czytnik e-booków"
-
-# ???
-#: cps/templates/admin.html:19 cps/templates/layout.html:372
-#: cps/templates/user_table.html:144
-msgid "Admin"
-msgstr "Panel administratora"
 
 #: cps/templates/admin.html:20 cps/templates/login.html:22
 #: cps/templates/login.html:23 cps/templates/user_edit.html:211
@@ -7363,11 +7471,6 @@ msgstr ""
 msgid "Read"
 msgstr "Przeczytana"
 
-#: cps/templates/image.html:27
-#, fuzzy
-msgid "Reading"
-msgstr "Przeczytana"
-
 #: cps/templates/index.html:104
 msgid "Mobile Notice"
 msgstr ""
@@ -7448,11 +7551,6 @@ msgstr "Katalog e-booków Calibre-Web Automated"
 #: cps/templates/layout.html:333
 msgid "Switch to New UI"
 msgstr ""
-
-#: cps/templates/layout.html:340 cps/templates/layout.html:376
-#: cps/templates/user_edit.html:312 cps/templates/user_edit.html:314
-msgid "Account"
-msgstr "Konto"
 
 #: cps/templates/layout.html:346 cps/templates/layout.html:378
 msgid "Logout"

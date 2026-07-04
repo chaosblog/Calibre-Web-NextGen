@@ -16,6 +16,14 @@ is for things you can see or feel when running the app.
 
 ## [Unreleased]
 
+### Added
+- **A "What's New" page, so you can see what changed without reading a
+  changelog.** The Help menu (the "?" in the top bar) now has a What's New entry
+  that opens a plain-English log of recent features and fixes — newest first,
+  grouped by release, each with a "Try it" link straight to the thing it
+  describes. A small dot on the Help menu points it out once after an update and
+  clears the moment you open it.
+
 ### Changed
 - **New browser-tab icon that matches the app.** The favicon is now the amber
   book mark from the refreshed interface, on the app's dark background — so the
@@ -30,6 +38,11 @@ is for things you can see or feel when running the app.
   now refuses to swap in artwork whose volume number disagrees with the
   book's title, and Kobo search results keep their ISBN so the exact-edition
   cover sources can be used in the first place. Reported by @boegill (#638).
+- **Your shelves are listed under the SHELVES heading in the sidebar again.** In
+  the new UI the sidebar showed a SHELVES heading with Tasks and About directly
+  beneath it, while your actual shelves were pushed to the very bottom of the
+  menu, off the end of the drawer. Shelves now appear right under the SHELVES
+  heading, with Tasks and About moved to the bottom where they belong.
 
 ## [v4.1.5] - 2026-07-03
 

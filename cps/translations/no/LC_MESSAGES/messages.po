@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web NextGen\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-03 12:59+0000\n"
+"POT-Creation-Date: 2026-07-04 13:23+0000\n"
 "PO-Revision-Date: 2023-01-06 11:00+0000\n"
 "Last-Translator: Vegard Fladby <vegard.fladby@gmail.com>\n"
 "Language-Team: \n"
@@ -2452,39 +2452,151 @@ msgstr ""
 msgid "Manual (drag below)"
 msgstr ""
 
-#: cps/spa_strings.py:29 cps/templates/detail.html:634
+#: cps/spa_strings.py:35 cps/templates/detail.html:634
 #, fuzzy
 msgid "Read now"
 msgstr "Lese bøker"
 
-#: cps/spa_strings.py:33
+#: cps/spa_strings.py:39
 #, fuzzy
 msgid "Series order"
 msgstr "Serieindeks"
 
-#: cps/spa_strings.py:34
+#: cps/spa_strings.py:40
 #, fuzzy
 msgid "Series order (reverse)"
 msgstr "Serie: %(serie)s"
 
-#: cps/spa_strings.py:38 cps/templates/detail.html:966
+#: cps/spa_strings.py:44 cps/templates/detail.html:966
 #: cps/templates/detail.html:967 cps/templates/detail.html:1532
 msgid "Add tag"
 msgstr ""
 
-#: cps/spa_strings.py:39
+#: cps/spa_strings.py:45
 msgid "New tag"
 msgstr ""
 
-#: cps/spa_strings.py:40 cps/templates/detail.html:958
+#: cps/spa_strings.py:46 cps/templates/detail.html:958
 #, fuzzy
 msgid "Remove tag"
 msgstr "Ta bort"
 
-#: cps/spa_strings.py:41
+#: cps/spa_strings.py:47
 #, fuzzy, python-format
 msgid "Remove tag %(name)s"
 msgstr "Ta bort"
+
+#: cps/spa_strings.py:54
+msgid "What's new"
+msgstr ""
+
+#: cps/spa_strings.py:55
+#, fuzzy
+msgid "Help — new updates available"
+msgstr "Oppdatering mislyktes:"
+
+#: cps/spa_strings.py:56
+#, fuzzy
+msgid "The latest features and fixes in Calibre-Web NextGen — newest first."
+msgstr "Calibre-Web test e-post"
+
+#: cps/spa_strings.py:57
+#, fuzzy, python-brace-format
+msgid "{n} update"
+msgstr "Databaseinnstillinger oppdatert"
+
+#: cps/spa_strings.py:58
+#, fuzzy, python-brace-format
+msgid "{n} updates"
+msgstr "Databaseinnstillinger oppdatert"
+
+#: cps/spa_strings.py:59
+msgid "No release notes yet — check back after the next update."
+msgstr ""
+
+#: cps/spa_strings.py:60
+msgid ""
+"The interface is translated into your language; these update notes are "
+"written in English."
+msgstr ""
+
+#: cps/spa_strings.py:62 cps/templates/image.html:27
+#, fuzzy
+msgid "Reading"
+msgstr "redusere"
+
+#: cps/spa_strings.py:63
+#, fuzzy
+msgid "Library"
+msgstr "I biblioteket"
+
+#: cps/spa_strings.py:64
+msgid "Sync"
+msgstr ""
+
+#: cps/spa_strings.py:65 cps/templates/layout.html:340
+#: cps/templates/layout.html:376 cps/templates/user_edit.html:312
+#: cps/templates/user_edit.html:314
+msgid "Account"
+msgstr ""
+
+#: cps/spa_strings.py:66 cps/templates/admin.html:19
+#: cps/templates/layout.html:372 cps/templates/user_table.html:144
+msgid "Admin"
+msgstr "Admin"
+
+#: cps/spa_strings.py:67
+msgid "Under the hood"
+msgstr ""
+
+#: cps/spa_strings.py:70
+#, fuzzy
+msgid "Open your library"
+msgstr "I biblioteket"
+
+#: cps/spa_strings.py:71
+#, fuzzy
+msgid "Open your shelves"
+msgstr "Skriv inn Språk"
+
+#: cps/spa_strings.py:72
+#, fuzzy
+msgid "Manage sync & app passwords"
+msgstr "Passord"
+
+#: cps/spa_strings.py:73
+#, fuzzy
+msgid "Create an app password"
+msgstr "Passord"
+
+#: cps/spa_strings.py:74
+#, fuzzy
+msgid "Browse series"
+msgstr "Bøker per side"
+
+#: cps/spa_strings.py:75
+msgid "Open Table view"
+msgstr ""
+
+#: cps/spa_strings.py:76
+#, fuzzy
+msgid "Open Admin"
+msgstr "Admin"
+
+#: cps/spa_strings.py:77
+#, fuzzy
+msgid "Browse Discover"
+msgstr "Oppdage"
+
+#: cps/spa_strings.py:78
+#, fuzzy
+msgid "Explore your library"
+msgstr "I biblioteket"
+
+#: cps/spa_strings.py:79
+#, fuzzy
+msgid "Go to Upload"
+msgstr "Laste opp"
 
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
@@ -3331,11 +3443,6 @@ msgstr "Send til E-Reader E-postadresse"
 #, fuzzy
 msgid "Send to eReader Subject"
 msgstr "Send til E-Reader"
-
-#: cps/templates/admin.html:19 cps/templates/layout.html:372
-#: cps/templates/user_table.html:144
-msgid "Admin"
-msgstr "Admin"
 
 #: cps/templates/admin.html:20 cps/templates/login.html:22
 #: cps/templates/login.html:23 cps/templates/user_edit.html:211
@@ -7345,11 +7452,6 @@ msgstr ""
 msgid "Read"
 msgstr "redusere"
 
-#: cps/templates/image.html:27
-#, fuzzy
-msgid "Reading"
-msgstr "redusere"
-
 #: cps/templates/index.html:104
 msgid "Mobile Notice"
 msgstr ""
@@ -7429,11 +7531,6 @@ msgstr "Calibre-Web test e-post"
 
 #: cps/templates/layout.html:333
 msgid "Switch to New UI"
-msgstr ""
-
-#: cps/templates/layout.html:340 cps/templates/layout.html:376
-#: cps/templates/user_edit.html:312 cps/templates/user_edit.html:314
-msgid "Account"
 msgstr ""
 
 #: cps/templates/layout.html:346 cps/templates/layout.html:378

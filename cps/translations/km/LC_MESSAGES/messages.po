@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web NextGen\n"
 "Report-Msgid-Bugs-To: https://github.com/crocodilestick/Calibre-Web-"
 "Automated\n"
-"POT-Creation-Date: 2026-07-03 12:59+0000\n"
+"POT-Creation-Date: 2026-07-04 13:23+0000\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -2395,38 +2395,149 @@ msgstr ""
 msgid "Manual (drag below)"
 msgstr ""
 
-#: cps/spa_strings.py:29 cps/templates/detail.html:634
+#: cps/spa_strings.py:35 cps/templates/detail.html:634
 #, fuzzy
 msgid "Read now"
 msgstr "អានក្នុងកម្មវិធី browser"
 
-#: cps/spa_strings.py:33
+#: cps/spa_strings.py:39
 #, fuzzy
 msgid "Series order"
 msgstr "រកមិនឃើញវត្ថុតាង"
 
-#: cps/spa_strings.py:34
+#: cps/spa_strings.py:40
 #, fuzzy
 msgid "Series order (reverse)"
 msgstr "ស៊េរី៖ %(serie)s"
 
-#: cps/spa_strings.py:38 cps/templates/detail.html:966
+#: cps/spa_strings.py:44 cps/templates/detail.html:966
 #: cps/templates/detail.html:967 cps/templates/detail.html:1532
 msgid "Add tag"
 msgstr ""
 
-#: cps/spa_strings.py:39
+#: cps/spa_strings.py:45
 msgid "New tag"
 msgstr ""
 
-#: cps/spa_strings.py:40 cps/templates/detail.html:958
+#: cps/spa_strings.py:46 cps/templates/detail.html:958
 msgid "Remove tag"
 msgstr ""
 
-#: cps/spa_strings.py:41
+#: cps/spa_strings.py:47
 #, python-format
 msgid "Remove tag %(name)s"
 msgstr ""
+
+#: cps/spa_strings.py:54
+msgid "What's new"
+msgstr ""
+
+#: cps/spa_strings.py:55
+msgid "Help — new updates available"
+msgstr ""
+
+#: cps/spa_strings.py:56
+#, fuzzy
+msgid "The latest features and fixes in Calibre-Web NextGen — newest first."
+msgstr "រក្សាទុកការកំណត់រួចផ្ញើអ៊ីមែលសាកល្បង"
+
+#: cps/spa_strings.py:57
+#, fuzzy, python-brace-format
+msgid "{n} update"
+msgstr "ទំនាក់ទំនងទៅមូលដ្ឋានទិន្នន័យត្រូវបានផ្តាច់"
+
+#: cps/spa_strings.py:58
+#, fuzzy, python-brace-format
+msgid "{n} updates"
+msgstr "ទំនាក់ទំនងទៅមូលដ្ឋានទិន្នន័យត្រូវបានផ្តាច់"
+
+#: cps/spa_strings.py:59
+msgid "No release notes yet — check back after the next update."
+msgstr ""
+
+#: cps/spa_strings.py:60
+msgid ""
+"The interface is translated into your language; these update notes are "
+"written in English."
+msgstr ""
+
+#: cps/spa_strings.py:62 cps/templates/image.html:27
+#, fuzzy
+msgid "Reading"
+msgstr "អាន"
+
+#: cps/spa_strings.py:63
+#, fuzzy
+msgid "Library"
+msgstr "នៅក្នុងបណ្ណាល័យ"
+
+#: cps/spa_strings.py:64
+msgid "Sync"
+msgstr ""
+
+#: cps/spa_strings.py:65 cps/templates/layout.html:340
+#: cps/templates/layout.html:376 cps/templates/user_edit.html:312
+#: cps/templates/user_edit.html:314
+msgid "Account"
+msgstr ""
+
+#: cps/spa_strings.py:66 cps/templates/admin.html:19
+#: cps/templates/layout.html:372 cps/templates/user_table.html:144
+msgid "Admin"
+msgstr "រដ្ឋបាល"
+
+#: cps/spa_strings.py:67
+msgid "Under the hood"
+msgstr ""
+
+#: cps/spa_strings.py:70
+#, fuzzy
+msgid "Open your library"
+msgstr "នៅក្នុងបណ្ណាល័យ"
+
+#: cps/spa_strings.py:71
+#, fuzzy
+msgid "Open your shelves"
+msgstr "លើកលែងស៊េរី"
+
+#: cps/spa_strings.py:72
+#, fuzzy
+msgid "Manage sync & app passwords"
+msgstr "អនុញ្ញាតឲប្តូរលេខសម្ងាត់"
+
+#: cps/spa_strings.py:73
+#, fuzzy
+msgid "Create an app password"
+msgstr "អនុញ្ញាតឲប្តូរលេខសម្ងាត់"
+
+#: cps/spa_strings.py:74
+#, fuzzy
+msgid "Browse series"
+msgstr "រុករក"
+
+#: cps/spa_strings.py:75
+msgid "Open Table view"
+msgstr ""
+
+#: cps/spa_strings.py:76
+#, fuzzy
+msgid "Open Admin"
+msgstr "រដ្ឋបាល"
+
+#: cps/spa_strings.py:77
+#, fuzzy
+msgid "Browse Discover"
+msgstr "ស្រាវជ្រាវ"
+
+#: cps/spa_strings.py:78
+#, fuzzy
+msgid "Explore your library"
+msgstr "នៅក្នុងបណ្ណាល័យ"
+
+#: cps/spa_strings.py:79
+#, fuzzy
+msgid "Go to Upload"
+msgstr "អាប់ឡូដ"
 
 #: cps/tasks_status.py:37 cps/templates/layout.html:369
 #: cps/templates/tasks.html:7
@@ -3244,11 +3355,6 @@ msgstr "ឧបករណ៍ Kindle"
 #, fuzzy
 msgid "Send to eReader Subject"
 msgstr "ផ្ញើទៅ Kindle"
-
-#: cps/templates/admin.html:19 cps/templates/layout.html:372
-#: cps/templates/user_table.html:144
-msgid "Admin"
-msgstr "រដ្ឋបាល"
 
 #: cps/templates/admin.html:20 cps/templates/login.html:22
 #: cps/templates/login.html:23 cps/templates/user_edit.html:211
@@ -7241,11 +7347,6 @@ msgstr ""
 msgid "Read"
 msgstr "អាន"
 
-#: cps/templates/image.html:27
-#, fuzzy
-msgid "Reading"
-msgstr "អាន"
-
 #: cps/templates/index.html:104
 msgid "Mobile Notice"
 msgstr ""
@@ -7324,11 +7425,6 @@ msgstr "រក្សាទុកការកំណត់រួចផ្ញើអ
 
 #: cps/templates/layout.html:333
 msgid "Switch to New UI"
-msgstr ""
-
-#: cps/templates/layout.html:340 cps/templates/layout.html:376
-#: cps/templates/user_edit.html:312 cps/templates/user_edit.html:314
-msgid "Account"
 msgstr ""
 
 #: cps/templates/layout.html:346 cps/templates/layout.html:378

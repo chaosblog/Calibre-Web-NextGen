@@ -180,7 +180,11 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
           </ul>
         )}
 
-        {/* Shelves: header links to the manage page; user's shelves listed below. */}
+        {/* Shelves: the section header links to the manage page and the user's
+            own shelves are listed directly beneath it (the group they belong to).
+            Smart shelves + power tools follow, and the low-frequency info pages
+            (Tasks / About) come last. Regression guard: the shelves used to
+            render as the very last block of the nav, orphaned below Tasks/About. */}
         <div className={styles.sectionHeader}>
           <Link
             href="/shelves"
@@ -192,27 +196,31 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
           </Link>
         </div>
 
-        <ul className={styles.list} role="list">
-          {SYSTEM.map(({ href, label, icon: Icon }) => {
-            const active = isActive(location, href, true);
-            return (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className={active ? styles.itemActive : styles.item}
-                  aria-current={active ? 'page' : undefined}
-                  onClick={onNavigate}
-                >
-                  <Icon size={18} className={styles.icon} aria-hidden="true" focusable={false} />
-                  <span>{t(label)}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {shelves.length > 0 && (
+          <ul className={styles.shelfList} role="list">
+            {shelves.map((s) => {
+              const href = `/shelf/${s.id}`;
+              const active = location === href;
+              return (
+                <li key={s.id}>
+                  <Link
+                    href={href}
+                    className={active ? styles.shelfItemActive : styles.shelfItem}
+                    aria-current={active ? 'page' : undefined}
+                    onClick={onNavigate}
+                    title={s.name}
+                  >
+                    <span className={styles.shelfName}>{s.name}</span>
+                    <span className={styles.shelfCount}>{s.count}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
 
-        {/* Power features served by the legacy UI under the hybrid cutover —
-            plain <a> so they leave the SPA. Reachable, not omitted. */}
+        {/* Smart shelves + power features served by the legacy UI under the
+            hybrid cutover — plain <a> so they leave the SPA. Reachable, not omitted. */}
         <ul className={styles.list} role="list">
           {showList && (
             <li>
@@ -270,28 +278,25 @@ export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
           )}
         </ul>
 
-        {shelves.length > 0 && (
-          <ul className={styles.shelfList} role="list">
-            {shelves.map((s) => {
-              const href = `/shelf/${s.id}`;
-              const active = location === href;
-              return (
-                <li key={s.id}>
-                  <Link
-                    href={href}
-                    className={active ? styles.shelfItemActive : styles.shelfItem}
-                    aria-current={active ? 'page' : undefined}
-                    onClick={onNavigate}
-                    title={s.name}
-                  >
-                    <span className={styles.shelfName}>{s.name}</span>
-                    <span className={styles.shelfCount}>{s.count}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        {/* Low-frequency info pages, last. */}
+        <ul className={styles.list} role="list">
+          {SYSTEM.map(({ href, label, icon: Icon }) => {
+            const active = isActive(location, href, true);
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={active ? styles.itemActive : styles.item}
+                  aria-current={active ? 'page' : undefined}
+                  onClick={onNavigate}
+                >
+                  <Icon size={18} className={styles.icon} aria-hidden="true" focusable={false} />
+                  <span>{t(label)}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
     </>
   );

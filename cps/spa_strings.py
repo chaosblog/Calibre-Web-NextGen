@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+# Calibre-Web Automated – fork of Calibre-Web
+# Copyright (C) 2018-2026 Calibre-Web contributors
+# Copyright (C) 2024-2026 Calibre-Web Automated contributors
+# SPDX-License-Identifier: GPL-3.0-or-later
+# See CONTRIBUTORS for full list of authors.
+
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Extraction anchors for SPA-only translatable strings.
 
@@ -168,3 +174,34 @@ _('{n} marked as read.')
 _('{n} marked as unread.')
 _('{n} selected')
 _('{pct}% read')
+# "What's new" in-app feature log (SPA /whats-new + the Help menu entry). The
+# page CHROME is localized; the per-release entry copy in data/whatsNew.ts is
+# English by design (documented on the page). Category names double as the chip
+# labels AND the WhatsNewCategory union values — keep them in sync with
+# frontend/src/data/whatsNew.ts if that union ever changes.
+_("What's new")
+_("Help — new updates available")
+_("The latest features and fixes in Calibre-Web NextGen — newest first.")
+_("{n} update")
+_("{n} updates")
+_("No release notes yet — check back after the next update.")
+_("The interface is translated into your language; these update notes are written in English.")
+# Category chips (must match the WhatsNewCategory union)
+_("Reading")
+_("Library")
+_("Sync")
+_("Account")
+_("Admin")
+_("Under the hood")
+# "Try it" deep-link button labels (data-authored, but stable enough to anchor
+# so a reader's locale can translate the call-to-action).
+_("Open your library")
+_("Open your shelves")
+_("Manage sync & app passwords")
+_("Create an app password")
+_("Browse series")
+_("Open Table view")
+_("Open Admin")
+_("Browse Discover")
+_("Explore your library")
+_("Go to Upload")
