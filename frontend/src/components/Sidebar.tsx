@@ -1,10 +1,13 @@
+import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import {
   Library, Users, Layers, Tag, Building2, Languages, BookCopy, UploadCloud, Shield,
-  Flame, Shuffle, Star, Archive, Info, ListChecks, Table2, Wand2, Files, FileType,
+  Flame, Shuffle, Star, Archive, Info, ListChecks, Table2, Wand2, Files, FileType, X,
 } from 'lucide-react';
 import { useShelves, useMe, useMagicShelves } from '../lib/queries';
 import { useT } from '../lib/i18n';
+import { useIsMobile } from '../lib/a11y/useIsMobile';
+import { useFocusTrap } from '../lib/a11y/useFocusTrap';
 import styles from './Sidebar.module.css';
 
 // `vis` is the sidebar-visibility key (#585) the entry is gated on, matching a
@@ -53,12 +56,29 @@ function isActive(location: string, href: string, exact?: boolean): boolean {
 interface SidebarProps {
   /** Mobile drawer open state. Ignored on desktop (always visible). */
   open: boolean;
+  /** Close the mobile drawer (Escape, scrim click, close button). */
+  onClose: () => void;
   onNavigate: () => void;
 }
 
-export function Sidebar({ open, onNavigate }: SidebarProps) {
+export function Sidebar({ open, onClose, onNavigate }: SidebarProps) {
   const [location] = useLocation();
   const t = useT();
+  const isMobile = useIsMobile();
+  const navRef = useRef<HTMLElement>(null);
+
+  // C5 (SC 2.1.1/2.1.2/2.4.3): on mobile the drawer is off-canvas. When CLOSED it
+  // must leave the tab order + a11y tree; when OPEN it traps focus and Escape
+  // closes it. On desktop it's a persistent rail — never inert, never trapped.
+  // `inert` is set imperatively to avoid React-18 non-boolean-attr console warns.
+  useEffect(() => {
+    const node = navRef.current;
+    if (!node) return;
+    if (isMobile && !open) node.setAttribute('inert', '');
+    else node.removeAttribute('inert');
+  }, [isMobile, open]);
+
+  useFocusTrap(navRef, { onClose, active: isMobile && open });
   const { data: shelvesData } = useShelves();
   const shelves = shelvesData?.items ?? [];
   const magicShelves = useMagicShelves().data?.items ?? [];
@@ -78,8 +98,17 @@ export function Sidebar({ open, onNavigate }: SidebarProps) {
 
   return (
     <>
-      {open && <div className={styles.scrim} onClick={onNavigate} aria-hidden="true" />}
-      <nav className={open ? styles.navOpen : styles.nav} aria-label="Browse">
+      {open && <div className={styles.scrim} onClick={onClose} aria-hidden="true" />}
+      <nav
+        ref={navRef}
+        className={open ? styles.navOpen : styles.nav}
+        aria-label={t('Browse')}
+        tabIndex={-1}
+      >
+        {/* Mobile-only close affordance (labelled); hidden on the desktop rail. */}
+        <button type="button" className={styles.drawerClose} onClick={onClose} aria-label={t('Close menu')}>
+          <X size={20} aria-hidden="true" focusable={false} />
+        </button>
         <ul className={styles.list}>
           {navEntries.map(({ href, label, icon: Icon, exact }) => {
             const active = isActive(location, href, exact);

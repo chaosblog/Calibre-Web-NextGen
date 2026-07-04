@@ -103,6 +103,11 @@
   color: var(--text-faint);
 }
 
+/* Drawer close button — mobile only (the desktop rail has no close affordance). */
+.drawerClose {
+  display: none;
+}
+
 /* Mobile scrim behind the drawer */
 .scrim {
   display: none;
@@ -149,6 +154,23 @@
 
   .navOpen {
     transform: translateX(0);
+  }
+
+  .drawerClose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+    margin-bottom: var(--sp-2);
+    border-radius: var(--r-md);
+    color: var(--text-muted);
+  }
+
+  .drawerClose:hover {
+    background: var(--surface-2);
+    color: var(--text);
   }
 
   .scrim {

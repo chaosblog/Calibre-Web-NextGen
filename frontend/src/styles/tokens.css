@@ -28,7 +28,10 @@
   /* ---- Color: text (warm paper-white, not clinical grey) ---- */
   --text:          #ece8e1;
   --text-muted:    #9aa7b2;
-  --text-faint:    #6d7b87;
+  /* WCAG 2.2 AA (SC 1.4.3): faint text must clear 4.5:1 on the lightest surface
+     it lands on (--surface-3 #2a3845). #94a1af = 4.56:1 there; the prior #6d7b87
+     failed universally (2.76–3.96:1). Do NOT darken past this without recomputing. */
+  --text-faint:    #94a1af;
   --on-accent:     #1a1206;   /* text on amber fills */
 
   /* ---- Color: status ---- */
