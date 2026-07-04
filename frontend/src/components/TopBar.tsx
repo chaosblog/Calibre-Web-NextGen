@@ -93,24 +93,25 @@ interface MenuItemProps {
 function MenuItem({ icon, label, to, href, danger, onClick, onSelect }: MenuItemProps) {
   const cls = danger ? `${styles.menuItem} ${styles.menuItemDanger}` : styles.menuItem;
   const handle = () => { onClick?.(); onSelect(); };
-  const inner = <><span className={styles.menuItemIcon}>{icon}</span>{label}</>;
+  // Disclosure pattern (not an ARIA menu): plain links/buttons, icons decorative.
+  const inner = <><span className={styles.menuItemIcon} aria-hidden="true">{icon}</span>{label}</>;
   if (to) {
     // Internal: wouter Link keeps it client-side (no full reload) and respects the base.
     return (
-      <Link href={to} role="menuitem" className={cls} onClick={onSelect}>
+      <Link href={to} className={cls} onClick={onSelect}>
         {inner}
       </Link>
     );
   }
   if (href) {
     return (
-      <a role="menuitem" className={cls} href={href} target="_blank" rel="noopener noreferrer" onClick={onSelect}>
+      <a className={cls} href={href} target="_blank" rel="noopener noreferrer" onClick={onSelect}>
         {inner}
       </a>
     );
   }
   return (
-    <button role="menuitem" type="button" className={cls} onClick={handle}>
+    <button type="button" className={cls} onClick={handle}>
       {inner}
     </button>
   );
@@ -124,7 +125,7 @@ function HelpMenu() {
       <button
         type="button"
         className={styles.triggerSquare}
-        aria-haspopup="menu"
+        aria-haspopup="true"
         aria-expanded={open}
         aria-label={t('Help')}
         onClick={onTriggerClick}
@@ -132,7 +133,7 @@ function HelpMenu() {
         <span className={styles.qmark} aria-hidden="true">?</span>
       </button>
       {open && (
-        <div className={`${styles.panel} ${styles.panelHelp}`} role="menu">
+        <div className={`${styles.panel} ${styles.panelHelp}`}>
           <p className={styles.panelHead}>{t('Help & support')}</p>
           <MenuItem
             icon={<IconWithBadge base={<Bug size={16} />} badge={<GithubMark />} />}
@@ -165,16 +166,16 @@ function UserMenu({ userName, onLogout }: { userName: string; onLogout: () => vo
       <button
         type="button"
         className={`${styles.trigger} ${open ? styles.triggerOpen : ''}`}
-        aria-haspopup="menu"
+        aria-haspopup="true"
         aria-expanded={open}
         onClick={onTriggerClick}
       >
-        <User size={15} className={styles.triggerLeadIcon} />
+        <User size={15} className={styles.triggerLeadIcon} aria-hidden="true" focusable={false} />
         <span className={styles.triggerLabel}>{userName}</span>
-        <ChevronDown size={15} className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`} />
+        <ChevronDown size={15} className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`} aria-hidden="true" focusable={false} />
       </button>
       {open && (
-        <div className={styles.panel} role="menu">
+        <div className={styles.panel}>
           <MenuItem icon={<User size={15} />} label={t('My account')} to="/account" onSelect={close} />
           <MenuItem icon={<Undo2 size={15} />} label={t('Back to the classic view')} onClick={backToClassicView} onSelect={close} />
           <MenuItem icon={<LogOut size={15} />} label={t('Sign out')} danger onClick={onLogout} onSelect={close} />
@@ -198,18 +199,18 @@ export function TopBar({ userName, instanceName, onLogout, onMenu }: TopBarProps
       <div className={styles.left}>
         {onMenu && (
           <button className={styles.menuBtn} onClick={onMenu} aria-label={t('Open navigation')}>
-            <Menu size={20} />
+            <Menu size={20} aria-hidden="true" focusable={false} />
           </button>
         )}
         <Link href="/" className={styles.brand}>
-          <BookMarked size={22} className={styles.brandIcon} />
+          <BookMarked size={22} className={styles.brandIcon} aria-hidden="true" focusable={false} />
           <span className={`${styles.brandText} ${styles.brandMain}`}>
             <BrandName name={instanceName} accentClassName={styles.brandAccent} />
           </span>
         </Link>
       </div>
       <form className={styles.search} onSubmit={onSearch} role="search">
-        <Search size={16} className={styles.searchIcon} />
+        <Search size={16} className={styles.searchIcon} aria-hidden="true" focusable={false} />
         <input
           type="search"
           className={styles.searchInput}
