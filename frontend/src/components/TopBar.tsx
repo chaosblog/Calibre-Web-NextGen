@@ -168,6 +168,8 @@ function UserMenu({ userName, onLogout }: { userName: string; onLogout: () => vo
         className={`${styles.trigger} ${open ? styles.triggerOpen : ''}`}
         aria-haspopup="true"
         aria-expanded={open}
+        // The visible userName label is display:none <420px; keep a stable name.
+        aria-label={t('Account: {name}', { name: userName })}
         onClick={onTriggerClick}
       >
         <User size={15} className={styles.triggerLeadIcon} aria-hidden="true" focusable={false} />

@@ -24,6 +24,10 @@
   --accent-press:  #b86d12;
   --accent-soft:   rgba(204, 123, 25, 0.14);  /* tinted fills, focus halos */
   --accent-ring:   rgba(224, 144, 42, 0.55);  /* focus-visible ring */
+  /* Amber TEXT on a tinted/dark surface (active nav, badges). --accent as text
+     on --accent-soft is only 3.95:1; this brighter amber clears AA (≥4.5:1).
+     SC 1.4.3 — do not use --accent for small text on a raised/tinted surface. */
+  --accent-text:   #e6a13f;
 
   /* ---- Color: text (warm paper-white, not clinical grey) ---- */
   --text:          #ece8e1;

@@ -36,7 +36,7 @@
 
 .itemActive {
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .icon {
@@ -66,7 +66,7 @@
 }
 
 .sectionTitle:hover { color: var(--text); background: var(--surface-2); }
-.sectionTitleActive { color: var(--accent); background: var(--accent-soft); }
+.sectionTitleActive { color: var(--accent-text); background: var(--accent-soft); }
 
 .shelfList {
   display: flex;
@@ -89,7 +89,7 @@
 }
 
 .shelfItem:hover { color: var(--text); background: var(--surface-2); }
-.shelfItemActive { color: var(--accent); background: var(--accent-soft); }
+.shelfItemActive { color: var(--accent-text); background: var(--accent-soft); }
 
 .shelfName {
   overflow: hidden;

@@ -33,6 +33,13 @@ async function axeScan(page: Page, label: string) {
     .filter((v) => FAIL_IMPACTS.includes(v.impact || ''))
     .filter((v) => !(v.id in KNOWN));
 
+  // Surface the exact offending nodes so a failure is actionable, not a mystery.
+  for (const v of failing) {
+    for (const n of v.nodes) {
+      console.log(`[a11y:${label}] ${v.id} @ ${JSON.stringify(n.target)} :: ${(n.failureSummary || '').replace(/\n/g, ' ')}`);
+    }
+  }
+
   expect(
     failing.map((v) => `${v.id} [${v.impact}] — ${v.help} (${v.nodes.length} node/s)`),
     `Accessibility violations on ${label}:\n${failing
