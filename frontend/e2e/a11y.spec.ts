@@ -87,6 +87,31 @@ for (const [label, path] of [
   });
 }
 
+test('reader: TOC traps focus + Escape, named progressbar, no critical/serious', async ({ page }) => {
+  if (isMobile()) test.skip();
+  // Find a book that offers the in-browser (epub) reader.
+  await page.goto('/app');
+  await page.locator('a[href*="/book/"]').first().click();
+  const readLink = page.locator('a[href*="/read/"]').first();
+  const hasReader = await readLink.isVisible().catch(() => false);
+  test.skip(!hasReader, 'no epub reader available in this library');
+  await readLink.click();
+  await page.getByRole('button', { name: /table of contents/i }).waitFor({ state: 'visible', timeout: 30_000 });
+
+  await expect(page.getByRole('progressbar', { name: /reading progress/i })).toBeVisible();
+
+  await page.getByRole('button', { name: /table of contents/i }).click();
+  const toc = page.locator('nav[aria-label="Table of contents"]');
+  await expect(toc).toBeVisible();
+  const focusInToc = await page.evaluate(() =>
+    !!document.activeElement?.closest('nav[aria-label="Table of contents"]'));
+  expect(focusInToc, 'focus moved into the TOC drawer').toBeTruthy();
+  await page.keyboard.press('Escape');
+  await expect(toc).toBeHidden();
+
+  await axeScan(page, 'reader');
+});
+
 test.describe('login (unauthenticated)', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
   test('login: no critical/serious a11y violations', async ({ page }) => {
