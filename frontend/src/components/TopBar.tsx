@@ -189,10 +189,22 @@ export function TopBar({ userName, instanceName, onLogout, onMenu }: TopBarProps
   const t = useT();
   const [, setLocation] = useLocation();
   const [q, setQ] = useState('');
+  // The search bar is hidden on narrow screens; a toggle button reveals it as an
+  // overlay row so mobile users can still search (Tier-3 gap).
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const term = q.trim();
     setLocation(term ? `/?q=${encodeURIComponent(term)}` : '/');
+    setMobileSearchOpen(false);
+  };
+  const toggleMobileSearch = () => {
+    setMobileSearchOpen((open) => {
+      const next = !open;
+      if (next) setTimeout(() => searchInputRef.current?.focus(), 0);
+      return next;
+    });
   };
   return (
     <header className={styles.bar}>
@@ -209,18 +221,33 @@ export function TopBar({ userName, instanceName, onLogout, onMenu }: TopBarProps
           </span>
         </Link>
       </div>
-      <form className={styles.search} onSubmit={onSearch} role="search">
+      <form
+        className={`${styles.search} ${mobileSearchOpen ? styles.searchMobileOpen : ''}`}
+        onSubmit={onSearch}
+        role="search"
+      >
         <Search size={16} className={styles.searchIcon} aria-hidden="true" focusable={false} />
         <input
+          ref={searchInputRef}
           type="search"
           className={styles.searchInput}
           placeholder={t('Search title, author…')}
           value={q}
           onChange={(e) => setQ(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Escape') setMobileSearchOpen(false); }}
           aria-label={t('Search the library')}
         />
       </form>
       <div className={styles.right}>
+        <button
+          type="button"
+          className={styles.mobileSearchBtn}
+          onClick={toggleMobileSearch}
+          aria-label={t('Search the library')}
+          aria-expanded={mobileSearchOpen}
+        >
+          <Search size={20} aria-hidden="true" focusable={false} />
+        </button>
         <HelpMenu />
         <UserMenu userName={userName} onLogout={onLogout} />
       </div>
