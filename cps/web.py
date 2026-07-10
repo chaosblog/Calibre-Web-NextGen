@@ -30,7 +30,7 @@ from sqlalchemy.sql.functions import coalesce
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services, helper
+from . import constants, logger, isoLanguages, services, helper, spa
 from . import db, ub, config, app
 from . import calibre_db, kobo_sync_status
 from .services.ereader_send import send_includes_own_address
@@ -1377,6 +1377,22 @@ def index(page):
             flash(arch_warning, category="cwa_arch_warning")
 
     sort_param = (request.args.get('sort') or 'stored').lower()
+
+    # Sticky new UI (#739). The SPA's "Back to classic view" nav lands here
+    # carrying cwng_feedback=newui — drop the preference cookie so leaving the
+    # SPA is sticky too. Only the web index does this; books_list, authors,
+    # OPDS, Kobo and the API never touch the cookie.
+    if request.args.get('cwng_feedback'):
+        response = make_response(render_books_list("newest", sort_param, 1, page))
+        spa.clear_prefer_spa_cookie(response)
+        return response
+
+    # And once a browser prefers the SPA, bounce a bookmarked classic-home URL
+    # to the new UI rather than silently reverting (and re-nagging). Same
+    # web-index-only scope; the helper also gates on SPA available + accepts HTML.
+    if spa.classic_index_redirects_to_spa():
+        return redirect(url_for("spa.spa_shell"))
+
     return render_books_list("newest", sort_param, 1, page)
 
 

@@ -4,7 +4,7 @@
 import json
 import os
 import re
-from flask import Blueprint, request, Response, abort
+from flask import Blueprint, request, Response, abort, current_app
 
 from . import logger, constants
 
@@ -38,6 +38,14 @@ def _spa_bundle_present():
     return os.path.isfile(os.path.join(_SPA_DIR, "index.html"))
 
 
+def spa_available():
+    """The SPA is available to THIS request: the opt-out env is on AND the built
+    bundle is on disk. The single source of truth the layout nudge, the SPA shell
+    guard, and the classic-index sticky-redirect all gate on — the context
+    processor exposes the same value to templates as ``cwng_spa_enabled``."""
+    return _spa_enabled() and _spa_bundle_present()
+
+
 @spa.app_context_processor
 def _inject_spa_flag():
     """Expose to ALL Jinja templates whether the new SPA is available (so the
@@ -45,7 +53,7 @@ def _inject_spa_flag():
     load) plus the running version (so the nudge banner can reset its dismissal
     on each update). app_context_processor = app-wide, not just this blueprint."""
     return {
-        "cwng_spa_enabled": _spa_enabled() and _spa_bundle_present(),
+        "cwng_spa_enabled": spa_available(),
         "cwng_app_version": constants.INSTALLED_VERSION,
     }
 
@@ -69,6 +77,63 @@ def _mount_prefix():
         log.warning("Ignoring unexpected script_root/prefix %r for SPA shell", prefix)
         return ""
     return prefix
+
+
+# Sticky new-UI preference (#739). The SPA shell stamps this cookie when it
+# loads; the classic web index ('/') redirects to the shell while it's present,
+# and the SPA's "Back to classic view" nav clears it. Per-browser only (no DB,
+# no account) — a user who picked the new UI once keeps it, on every tab and
+# bookmark, until they switch back.
+PREFER_SPA_COOKIE = "cwng_prefer_spa"
+_PREFER_SPA_MAX_AGE = 60 * 60 * 24 * 365  # one year
+
+
+def prefer_spa_cookie_path():
+    """Scope the preference cookie to the app's mount prefix (request.script_root),
+    or '/' at the domain root. Two CWNG instances on different subpaths of one
+    host must not share the cookie, and the path must match between set and
+    delete or the browser keeps both — so both go through here. Mirrors how Flask
+    scopes the session cookie (which also follows SCRIPT_NAME)."""
+    return _mount_prefix() or "/"
+
+
+def stamp_prefer_spa_cookie(resp):
+    """Set the 'user prefers the SPA' cookie on a response (used when the SPA
+    shell is served). ``httponly=False`` so the SPA runtime can read it; Secure
+    and SameSite mirror the session cookie so they share transport guarantees."""
+    resp.set_cookie(
+        PREFER_SPA_COOKIE,
+        value="1",
+        max_age=_PREFER_SPA_MAX_AGE,
+        path=prefer_spa_cookie_path(),
+        secure=bool(current_app.config.get("SESSION_COOKIE_SECURE", False)),
+        samesite=current_app.config.get("SESSION_COOKIE_SAMESITE", "Lax"),
+        httponly=False,
+    )
+    return resp
+
+
+def clear_prefer_spa_cookie(resp):
+    """Delete the 'user prefers the SPA' cookie — used when the user returns to
+    the classic UI from the SPA. Same path the set used, else the browser keeps
+    both."""
+    resp.delete_cookie(PREFER_SPA_COOKIE, path=prefer_spa_cookie_path())
+    return resp
+
+
+def classic_index_redirects_to_spa():
+    """Should the classic web index ('/') bounce to the SPA shell? True only when
+    the SPA is available, the browser carries the ``cwng_prefer_spa`` cookie, this
+    is NOT the SPA's own 'back to classic' marker (``cwng_feedback``), and the
+    client wants HTML (not an API/OPDS machine client). Web index only — never
+    books_list, authors, OPDS, Kobo, API, or login (#739 design)."""
+    if not spa_available():
+        return False
+    if request.args.get("cwng_feedback"):
+        return False
+    if request.cookies.get(PREFER_SPA_COOKIE) != "1":
+        return False
+    return bool(request.accept_mimetypes.accept_html)
 
 
 def _render_shell(index_path, prefix):
@@ -109,4 +174,8 @@ def spa_shell(path=""):
         log.warning("SPA shell requested but build artifact not found: %s — run the Vite build "
                     "or set CWNG_SPA=0 to suppress this warning", index_path)
         abort(404)
-    return _render_shell(index_path, _mount_prefix())
+    resp = _render_shell(index_path, _mount_prefix())
+    # #739: loading the SPA is the act of choosing it — persist the preference so
+    # a later visit to a classic URL lands back on the new UI instead of reverting.
+    stamp_prefer_spa_cookie(resp)
+    return resp
