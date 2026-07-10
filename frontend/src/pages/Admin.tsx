@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shield, Trash2, Mail, UserPlus, ExternalLink, Settings, Database, Server, Clock, FileText, Sliders, BarChart3, Files, Lock, RefreshCw } from 'lucide-react';
+import { Shield, Trash2, Mail, UserPlus, ChevronRight, Settings, Database, Server, Clock, FileText, Sliders, BarChart3, Files, Lock, RefreshCw } from 'lucide-react';
 import { useEffect } from 'react';
 import {
   useAdminUsers, useUpdateAdminUser, useDeleteAdminUser, useCreateAdminUser, useMe,
@@ -226,17 +226,16 @@ export function Admin() {
         {t('These open the full configuration pages. Changes there apply to the whole server.')}
       </p>
       <div className={styles.settingsGrid}>
+        {/* Same-tab on purpose: these are in-app pages, not external sites (#738). */}
         {SERVER_SETTINGS.map(({ href, label, icon: Icon }) => (
           <a
             key={href}
             href={resourceUrl(href)}
-            target="_blank"
-            rel="noopener noreferrer"
             className={styles.settingsCard}
           >
             <Icon size={18} className={styles.settingsIcon} aria-hidden="true" />
             <span className={styles.settingsLabel}>{t(label)}</span>
-            <ExternalLink size={13} className={styles.settingsExt} aria-hidden="true" />
+            <ChevronRight size={13} className={styles.settingsExt} aria-hidden="true" />
           </a>
         ))}
       </div>
