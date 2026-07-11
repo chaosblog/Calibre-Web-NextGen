@@ -2889,7 +2889,7 @@ msgstr "Нет результатов для \"{q}\"."
 
 #: cps/spa_strings.py:147
 msgid "No suggestions"
-msgstr ""
+msgstr "Нет вариантов"
 
 #: cps/spa_strings.py:148
 #, python-brace-format
@@ -3359,8 +3359,7 @@ msgstr "{label} восстановлен(а)"
 msgid "Could not save sidebar. Please try again."
 msgstr "Не удалось сохранить боковую панель. Пожалуйста, попробуйте снова."
 
-#: cps/spa_strings.py:273
-#, fuzzy
+#: cps/spa_strings.py:271
 msgid "Refresh library"
 msgstr "Обновить библиотеку"
 
@@ -4418,10 +4417,9 @@ msgstr "Удалить из избранного"
 msgid "Remove from shelf"
 msgstr "Удалить с полки"
 
-#: cps/spa_strings.py:536
-#, fuzzy
+#: cps/spa_strings.py:534
 msgid "Remove highlight"
-msgstr "Выделение"
+msgstr "Удалить выделение"
 
 #: cps/spa_strings.py:537
 msgid "Remove identifier"
@@ -9756,9 +9754,8 @@ msgid "Switch to the new Calibre-Web NextGen interface"
 msgstr "Переключиться на новый интерфейс Calibre-Web NextGen"
 
 #: cps/templates/layout.html:335
-#, fuzzy
 msgid "Back to New UI"
-msgstr "Перейти на новый интерфейс"
+msgstr "Вернуться к новому интерфейсу"
 
 #: cps/templates/layout.html:335
 msgid "Switch to New UI"
