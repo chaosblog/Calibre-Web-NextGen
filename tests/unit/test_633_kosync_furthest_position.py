@@ -16,6 +16,7 @@ from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from cps import helper
 from cps.progress_syncing.models import AppBase, KOSyncProgress
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -82,8 +83,8 @@ def test_two_devices_lower_late_push_does_not_replace_furthest(protocol):
 
 
 @pytest.mark.unit
-def test_same_device_backward_navigation_does_not_lower_server_record(protocol):
-    """A local page turn backwards is not a new cross-device furthest point."""
+def test_same_device_backward_navigation_replaces_server_record(protocol):
+    """A device is authoritative for its own deliberate rewind."""
     client, session = protocol
 
     assert _push(client, "digest-a", 0.80, "device-a").status_code == 200
@@ -91,7 +92,28 @@ def test_same_device_backward_navigation_does_not_lower_server_record(protocol):
 
     response = client.get("/kosync/syncs/progress/digest-a")
     assert response.status_code == 200
-    assert response.get_json()["percentage"] == pytest.approx(0.80)
+    assert response.get_json()["percentage"] == pytest.approx(0.67)
+    assert session.query(KOSyncProgress).one().percentage == pytest.approx(67.0)
+
+
+@pytest.mark.unit
+def test_missing_device_id_does_not_bypass_cross_device_guard(protocol):
+    """An absent wire identifier cannot prove that the pushing device owns the row."""
+    client, session = protocol
+
+    assert _push(client, "digest-a", 0.80, "device-a").status_code == 200
+    response = client.put("/kosync/syncs/progress", json={
+        "document": "digest-b",
+        "progress": "cre://position/67",
+        "percentage": 0.67,
+        "device": "unnamed",
+        "device_id": "",
+    })
+
+    assert response.status_code == 200
+    pulled = client.get("/kosync/syncs/progress/digest-b")
+    assert pulled.status_code == 200
+    assert pulled.get_json()["percentage"] == pytest.approx(0.80)
     assert session.query(KOSyncProgress).one().percentage == pytest.approx(80.0)
 
 
@@ -130,6 +152,41 @@ def test_pull_chooses_furthest_across_legacy_digest_rows(protocol):
     response = client.get("/kosync/syncs/progress/digest-b")
     assert response.status_code == 200
     assert response.get_json()["percentage"] == pytest.approx(0.80)
+
+
+@pytest.mark.unit
+def test_mark_unread_removes_all_kosync_keys_and_get_has_no_stale_progress(
+        protocol, monkeypatch):
+    """Restarting a finished book clears book-id and legacy digest progress."""
+    client, session = protocol
+    now = datetime.now(timezone.utc)
+    session.add_all([
+        KOSyncProgress(
+            user_id=1, document="42", progress="cre://position/100",
+            percentage=100.0, device="device-a", device_id="device-a",
+            timestamp=now,
+        ),
+        KOSyncProgress(
+            user_id=1, document="digest-a", progress="cre://position/100",
+            percentage=100.0, device="device-a", device_id="device-a",
+            timestamp=now,
+        ),
+    ])
+    session.commit()
+    monkeypatch.setattr(
+        helper, "_get_kosync_checksums_for_book",
+        lambda book_id: ["digest-a", "digest-b"] if book_id == 42 else [],
+        raising=False,
+    )
+
+    cleared = helper.reset_reading_position(session, 1, 42)
+    session.commit()
+
+    assert cleared == 2
+    assert session.query(KOSyncProgress).count() == 0
+    response = client.get("/kosync/syncs/progress/digest-a")
+    assert response.status_code == 200
+    assert response.get_json() == {}
 
 
 @pytest.mark.unit

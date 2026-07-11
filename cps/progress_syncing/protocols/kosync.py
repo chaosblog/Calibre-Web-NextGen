@@ -847,9 +847,13 @@ def update_progress():
             # KOReader devices push their current location on suspend/close,
             # including after navigating backwards.  A later push therefore
             # does not necessarily represent the furthest reading position.
-            # Preserve the furthest percentage; timestamps only break ties at
-            # the same percentage (where a newer locator may be more precise).
-            if percentage_float >= progress_record.percentage:
+            # A named device is authoritative for its own position, including
+            # deliberate rewinds and restarting a finished book. Missing/empty
+            # device IDs cannot establish identity and are therefore never
+            # treated as same-device pushes. Across devices, preserve the
+            # furthest percentage; equal values may refresh the exact locator.
+            same_device = bool(device_id) and device_id == progress_record.device_id
+            if same_device or percentage_float >= progress_record.percentage:
                 progress_record.progress = progress
                 progress_record.percentage = percentage_float
                 progress_record.device = device
@@ -858,9 +862,11 @@ def update_progress():
             else:
                 log.info(
                     "Preserved furthest kosync progress: user=%s, document=%s, "
-                    "incoming=%.2f%%, stored=%.2f%%",
+                    "incoming=%.2f%%, stored=%.2f%%, incoming_device_id=%r, "
+                    "stored_device_id=%r",
                     user.id, document, percentage_float,
-                    progress_record.percentage,
+                    progress_record.percentage, device_id,
+                    progress_record.device_id,
                 )
                 # The response and downstream Kobo/ReadBook mirror must
                 # describe the accepted server position, not the rejected
