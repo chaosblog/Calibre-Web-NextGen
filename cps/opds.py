@@ -139,6 +139,7 @@ OPDS_ROOT_ORDER_DEFAULT = [
     'recent',
     'random',
     'read',
+    'currently_reading',
     'unread',
     'authors',
     'publishers',
@@ -192,6 +193,12 @@ OPDS_ROOT_ENTRY_DEFS = {
         'endpoint': 'opds.feed_read_books',
         'title': N_('Read Books'),
         'description': N_('Read Books'),
+        'visible': lambda user, __: user.check_visibility(constants.SIDEBAR_READ_AND_UNREAD) and not user.is_anonymous,
+    },
+    'currently_reading': {
+        'endpoint': 'opds.feed_currently_reading',
+        'title': N_('Currently Reading'),
+        'description': N_('Books currently being read'),
         'visible': lambda user, __: user.check_visibility(constants.SIDEBAR_READ_AND_UNREAD) and not user.is_anonymous,
     },
     'unread': {
@@ -1085,6 +1092,40 @@ def feed_read_books():
                                            True,
                                            True,
                                            extra_filter=get_opds_book_filter())
+    return render_xml_template('feed.xml', entries=result, pagination=pagination)
+
+
+@opds.route("/opds/currentlyreading")
+@requires_basic_auth_if_no_ano
+def feed_currently_reading():
+    user = auth.current_user()
+    if not (user.check_visibility(constants.SIDEBAR_READ_AND_UNREAD) and not user.is_anonymous):
+        return abort(403)
+
+    in_progress_filter = magic_shelf.build_filter_from_rule({
+        'id': 'read_status',
+        'field': 'read_status',
+        'type': 'integer',
+        'input': 'radio',
+        'operator': 'equal',
+        'value': ub.ReadBook.STATUS_IN_PROGRESS,
+    }, user_id=user.id)
+    if in_progress_filter is None:
+        return abort(500)
+
+    off = request.args.get("offset") or 0
+    result, __, pagination = fill_opds_indexpage(
+        int(off) / int(config.config_books_per_page) + 1,
+        0,
+        db.Books,
+        in_progress_filter,
+        [db.Books.timestamp.desc()],
+        True,
+        config.config_read_column,
+        db.books_series_link,
+        db.Books.id == db.books_series_link.c.book,
+        db.Series,
+    )
     return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
 
