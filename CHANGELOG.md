@@ -30,6 +30,9 @@ is for things you can see or feel when running the app.
 - **The new UI's send-to-e-reader dialog now shows your saved e-reader address instead of an empty recipient field.** The recipient box was blank with only a "blank = your e-reader email" hint, so it looked like the address you'd saved in your account had been lost — even though sending still worked. The field is now prefilled with your saved address; type a different one to override it for that send, or clear it to fall back to the saved address. ([#715](https://github.com/new-usemame/Calibre-Web-NextGen/issues/715))
 - **Reporting an issue from the new UI's Help menu now opens the bug-report form instead of a blank issue.** The "Report Issue on GitHub" link pointed at the blank-issue URL, so reporters landed on an empty textarea rather than the Bug report / Feature request templates defined in the repo. It now opens the issue-template chooser. Thanks to @auspex for the report ([#799](https://github.com/new-usemame/Calibre-Web-NextGen/issues/799)).
 - **The edit pencil on a book card can now be opened in a new tab.** In the new UI, the hover edit pencil on a book card was a button rather than a real link, so ⌘/ctrl-click (or middle-click) didn't open the editor in a new tab the way real links do — there was no `href` for the browser to open. The pencil is now a true link: a plain click still opens the editor in place (no full page reload), and a modified click opens it in a new tab. Thanks to @chloeroform for the report ([#798](https://github.com/new-usemame/Calibre-Web-NextGen/issues/798)).
+### Fixed
+
+- **Saving a cover for a PDF-only or other non-EPUB/AZW3 book no longer ends with a false enforcement error.** The metadata enforcer now preserves the successful cover save, refreshes the format-independent `metadata.opf` backup, and logs an informational note that only in-file embedding was skipped for the unsupported format (#797).
 
 ## [v4.1.9] - 2026-07-11
 

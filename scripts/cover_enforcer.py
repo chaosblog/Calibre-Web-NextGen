@@ -615,9 +615,46 @@ class Enforcer:
             self._reset_book_dir_ownership(book_dir)
             return book_objects
         else:
-            print(f"[cover-metadata-enforcer]: No supported file formats found in {book_dir}.", flush=True)
-            print("[cover-metadata-enforcer]: *** NOTICE **** Only EPUB & AZW3 formats are currently supported.", flush=True)
+            return self._write_metadata_backup_for_unsupported(book_dir)
+
+    def _write_metadata_backup_for_unsupported(self, book_dir: str) -> list:
+        """Refresh metadata.opf when no format supports in-file embedding.
+
+        Cover saves happen before the metadata-change log reaches this
+        service.  Exporting Calibre's current OPF is format-independent, so
+        PDF/MOBI/etc. books can still persist that backup even though
+        ebook-polish cannot embed the changes into their book files.
+        """
+        sidecars = {"cover.jpg", "metadata.opf"}
+        book_files = [
+            os.path.join(dirpath, filename)
+            for dirpath, _, filenames in os.walk(book_dir)
+            for filename in filenames
+            if filename.lower() not in sidecars
+        ]
+        if not book_files:
+            print(f"[cover-metadata-enforcer] ERROR: No book file found in {book_dir}; metadata.opf was not updated.", flush=True)
             return []
+
+        book = Book(book_dir, book_files[0])
+        try:
+            self.replace_old_metadata(book.old_metadata_path, book.new_metadata_path)
+        finally:
+            self.empty_metadata_temp()
+
+        self._reset_book_dir_ownership(book_dir)
+        print(
+            f"[cover-metadata-enforcer] SUCCESS: Cover saved and metadata.opf updated for "
+            f"'{book.book_title}' ({book.file_format.upper()}).",
+            flush=True,
+        )
+        print(
+            f"[cover-metadata-enforcer] INFO: Metadata embedding into the "
+            f"{book.file_format.upper()} book file was skipped; only EPUB and "
+            "AZW3 support in-file enforcement.",
+            flush=True,
+        )
+        return [book]
 
     @staticmethod
     def _reset_book_dir_ownership(book_dir: str) -> None:
