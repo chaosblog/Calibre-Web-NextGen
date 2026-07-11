@@ -15,6 +15,14 @@ The fix drops ``target="_blank"`` from the server-settings cards and swaps
 the misleading external-link glyph for a chevron. Genuinely external links
 elsewhere (GitHub/Discord in the top bar, download/export links) keep
 their new-tab behaviour — this pin is scoped to Admin.tsx only.
+
+Supersedes ``test_584_admin_legacy_link_new_tab.py`` (removed): #584's
+new-tab behaviour was a deliberate workaround for "entering a sub-menu
+reverts the whole UI", chosen before the new-UI preference was sticky.
+With #739 the preference persists (classic home bounces back to the SPA
+and the header pill offers "Back to New UI"), so the same-tab navigation
+users keep asking for (#738, #739) no longer costs @Glennza1962's
+original complaint — the root cause is fixed instead of routed around.
 """
 
 from __future__ import annotations
