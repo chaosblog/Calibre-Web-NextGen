@@ -580,6 +580,7 @@ def get_progress_record(user_id, document_checksum, book_id) -> KOSyncProgress:
         KOSyncProgress.user_id == user_id,
         KOSyncProgress.document.in_(tuple(lookup_keys))
     ).order_by(
+        desc(KOSyncProgress.percentage),
         desc(KOSyncProgress.timestamp)
     ).first()
 
@@ -843,12 +844,30 @@ def update_progress():
         document = book_id or document
 
         if progress_record:
-            # Update existing record
-            progress_record.progress = progress
-            progress_record.percentage = percentage_float
-            progress_record.device = device
-            progress_record.device_id = device_id
-            progress_record.timestamp = timestamp
+            # KOReader devices push their current location on suspend/close,
+            # including after navigating backwards.  A later push therefore
+            # does not necessarily represent the furthest reading position.
+            # Preserve the furthest percentage; timestamps only break ties at
+            # the same percentage (where a newer locator may be more precise).
+            if percentage_float >= progress_record.percentage:
+                progress_record.progress = progress
+                progress_record.percentage = percentage_float
+                progress_record.device = device
+                progress_record.device_id = device_id
+                progress_record.timestamp = timestamp
+            else:
+                log.info(
+                    "Preserved furthest kosync progress: user=%s, document=%s, "
+                    "incoming=%.2f%%, stored=%.2f%%",
+                    user.id, document, percentage_float,
+                    progress_record.percentage,
+                )
+                # The response and downstream Kobo/ReadBook mirror must
+                # describe the accepted server position, not the rejected
+                # backwards push.
+                percentage_float = progress_record.percentage
+                timestamp = progress_record.timestamp
+                response_data["timestamp"] = int(timestamp.timestamp())
             # #633 self-heal: if the book resolved to a book_id, converge the
             # record onto the book_id key. A record first stored under a raw
             # file checksum (book_id didn't resolve at the time) is thereby
