@@ -18,6 +18,7 @@ is for things you can see or feel when running the app.
 
 ### Added
 
+- **Book ratings can now be set with an inline five-star control in the new editor.** Click either half of a star for half-star precision, use the arrow keys to adjust in half-star steps, or clear the rating explicitly — no dropdown required. ([#779](https://github.com/new-usemame/Calibre-Web-NextGen/issues/779))
 - **The new UI's book editor has a Publication date field again.** The redesigned editor shipped without the publication-date field the classic editor has, so the date could only be set from the classic UI. The editor now has a "Published" date input — prefilled from the book's current date, and clearable to reset it. This completes the #689 report alongside the metadata autocomplete that shipped in v4.1.9. ([#689](https://github.com/new-usemame/Calibre-Web-NextGen/issues/689))
 
 ### Fixed

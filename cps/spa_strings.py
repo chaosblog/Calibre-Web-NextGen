@@ -53,6 +53,8 @@ _("Remove tag {name}")
 # page) and the "More by this author" browse strip that fills the page for
 # sparse books. SPA-only strings (BookDetail.tsx / StarRating.tsx /
 # MoreByAuthor.tsx), anchored so the auto-translation job keeps them.
+_("Clear rating")
+_("Not rated")
 _("Rated {rating} out of 5")
 _("More by {name}")
 

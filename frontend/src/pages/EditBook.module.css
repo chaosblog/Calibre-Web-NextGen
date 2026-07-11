@@ -70,6 +70,12 @@
 .input { width: 100%; }
 .inputNarrow { width: 130px; }
 
+.ratingControl { display: flex; align-items: center; gap: var(--sp-3); min-height: 40px; }
+.ratingStars { display: flex; color: var(--text-faint); cursor: pointer; border-radius: var(--r-sm); }
+.ratingStars:focus-visible { outline: 2px solid var(--accent-ring); outline-offset: 3px; }
+.clearRating { min-height: 40px; color: var(--text-muted); text-decoration: underline; }
+.clearRating:disabled { opacity: .45; cursor: default; }
+
 .textarea {
   width: 100%;
   resize: vertical;

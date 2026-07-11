@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useId, cloneElement, isValidElement, type ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'wouter';
-import { ChevronLeft, Save, Trash2, RefreshCw, Image as ImageIcon, Upload as UploadIcon, ExternalLink, Sparkles, Search, Plus, X, MoreHorizontal } from 'lucide-react';
+import { ChevronLeft, Save, Trash2, RefreshCw, Image as ImageIcon, Upload as UploadIcon, ExternalLink, Sparkles, Search, Plus, X, MoreHorizontal, Star } from 'lucide-react';
 import {
   useBookMetadata, useUpdateMetadata, useBook, useMe, useDeleteFormat, useConvertFormat,
   useSetCover, useMetadataSearch, useAddFormat,
@@ -10,6 +10,7 @@ import { Button } from '../components/Button';
 import { MetadataTypeahead } from '../components/MetadataTypeahead';
 import { Spinner, SpinnerCentered } from '../components/Spinner';
 import { EmptyState } from '../components/EmptyState';
+import { StarRating } from '../components/StarRating';
 import type { MetadataUpdate, MetaResult } from '../lib/api';
 import { ApiError, resourceUrl } from '../lib/api';
 import { useT } from '../lib/i18n';
@@ -31,7 +32,38 @@ interface FormState {
   identifiers: Ident[];
 }
 
-const RATINGS = ['', '1', '2', '3', '4', '5'];
+function RatingSelector({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const t = useT();
+  const rating = Number(value) || 0;
+  const setRating = (next: number) => onChange(next > 0 ? String(Math.max(0.5, Math.min(5, next))) : '');
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    let next: number | null = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') next = rating + 0.5;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') next = rating - 0.5;
+    if (e.key === 'Home') next = 0;
+    if (e.key === 'End') next = 5;
+    if (next !== null) { e.preventDefault(); setRating(next); }
+  };
+  const choose = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setRating(Math.ceil(((e.clientX - rect.left) / rect.width) * 10) / 2);
+  };
+  return (
+    <div className={styles.ratingControl}>
+      <div className={styles.ratingStars} role="slider" tabIndex={0}
+        aria-label={t('Rating')} aria-valuemin={0} aria-valuemax={5} aria-valuenow={rating}
+        aria-valuetext={rating ? t('Rated {rating} out of 5', { rating }) : t('Not rated')}
+        onKeyDown={onKeyDown} onClick={choose}>
+        {rating ? <StarRating rating={rating * 2} size={26} /> : Array.from({ length: 5 }, (_, i) => (
+          <Star key={i} size={26} aria-hidden="true" focusable={false} />
+        ))}
+      </div>
+      <button type="button" className={styles.clearRating} onClick={() => onChange('')} disabled={!rating}>
+        {t('Clear rating')}
+      </button>
+    </div>
+  );
+}
 
 /** Which fields a fetched result can contribute, in display order. `has` decides
  *  whether the result actually offers the field (so we only show applicable rows),
@@ -223,9 +255,7 @@ export function EditBook({ id }: { id: string }) {
               aria-label={t('Languages (comma separated)')} />
           </Field>
           <Field label={t('Rating')} error={fieldErrors.rating} grow={false}>
-            <select className={styles.inputNarrow} value={form.rating} onChange={(e) => set('rating', e.target.value)}>
-              {RATINGS.map((r) => <option key={r} value={r}>{r ? `${r} ★` : '—'}</option>)}
-            </select>
+            <RatingSelector value={form.rating} onChange={(value) => set('rating', value)} />
           </Field>
         </div>
 
