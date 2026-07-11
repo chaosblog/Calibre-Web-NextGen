@@ -318,6 +318,9 @@ def get_opds_root_entries(user, allow_anonymous):
 # key so the human-readable string stays defined in exactly one place.
 _OPDS_DETAIL_ENDPOINT_ROOT_KEY = {
     'opds.feed_letter_books': 'books',
+    'opds.feed_letter_author': 'authors',
+    'opds.feed_letter_category': 'categories',
+    'opds.feed_letter_series': 'series',
     'opds.feed_author': 'authors',
     'opds.feed_publisher': 'publishers',
     'opds.feed_category': 'categories',
@@ -346,6 +349,36 @@ def _opds_feed_title_for_endpoint(endpoint):
     if root_key and root_key in OPDS_ROOT_ENTRY_DEFS:
         return _(OPDS_ROOT_ENTRY_DEFS[root_key]['title'])
     return None
+
+
+# PR #758 follow-up (@chloeroform): sub-parameter feeds should carry their
+# parameter so a reader's feed list distinguishes "Authors (U)" from
+# "Authors (V)" and "Categories: Fantasy" from "Categories: History".
+
+
+def _feed_title_with_letter(letter):
+    """Inherited feed title qualified with the letter filter — "Authors (U)".
+    The "00" pseudo-letter is the unfiltered "All" listing, which keeps the
+    bare parent title."""
+    base = _opds_feed_title_for_endpoint(request.endpoint)
+    if not base:
+        return None
+    if not letter or letter == "00":
+        return base
+    return "{} ({})".format(base, letter)
+
+
+def _feed_title_with_name(name):
+    """Inherited feed title qualified with the selected entity's display name
+    — "Categories: Fantasy". Falls back to the bare parent title when the
+    name is unknown (deleted/foreign id) so the feed still renders."""
+    base = _opds_feed_title_for_endpoint(request.endpoint)
+    name = ("" if name is None else str(name)).strip()
+    if not base:
+        return name or None
+    if not name:
+        return base
+    return "{}: {}".format(base, name)
 
 
 def opds_only_selected_shelves(user=None):
@@ -571,7 +604,8 @@ def feed_letter_books(book_id):
                                                   [db.Books.sort],
                                                   True, config.config_read_column)
 
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination,
+                               feed_title=_feed_title_with_letter(book_id))
 
 
 @opds.route("/opds/new")
@@ -657,7 +691,8 @@ def feed_letter_author(book_id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             entries.count())
     entries = entries.limit(config.config_books_per_page).offset(off).all()
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_author', pagination=pagination)
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_author', pagination=pagination,
+                               feed_title=_feed_title_with_letter(book_id))
 
 
 @opds.route("/opds/author/<int:book_id>")
@@ -713,7 +748,8 @@ def feed_letter_category(book_id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             entries.count())
     entries = entries.offset(off).limit(config.config_books_per_page).all()
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_category', pagination=pagination)
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_category', pagination=pagination,
+                               feed_title=_feed_title_with_letter(book_id))
 
 
 @opds.route("/opds/category/<int:book_id>")
@@ -746,7 +782,8 @@ def feed_letter_series(book_id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             entries.count())
     entries = entries.offset(off).limit(config.config_books_per_page).all()
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_series', pagination=pagination)
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_series', pagination=pagination,
+                               feed_title=_feed_title_with_letter(book_id))
 
 
 @opds.route("/opds/series/<int:book_id>")
@@ -758,7 +795,8 @@ def feed_series(book_id):
                                                   db.Books.series.any(db.Series.id == book_id),
                                                   [db.Books.series_index],
                                                   True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination,
+                               feed_title=_feed_title_with_name(_dataset_display_name(db.Series, book_id)))
 
 
 @opds.route("/opds/ratings")
@@ -816,7 +854,8 @@ def feed_format(book_id):
                                                   db.Books.data.any(db.Data.format == book_id.upper()),
                                                   [db.Books.timestamp.desc()],
                                                   True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination,
+                               feed_title=_feed_title_with_name(book_id.upper()))
 
 
 @opds.route("/opds/language")
@@ -852,7 +891,23 @@ def feed_languages(book_id):
                                                   db.Books.languages.any(db.Languages.id == book_id),
                                                   [db.Books.timestamp.desc()],
                                                   True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination,
+                               feed_title=_feed_title_with_name(_language_display_name(book_id)))
+
+
+def _language_display_name(book_id):
+    """Locale-aware display name of a language row, for the qualified feed
+    title ("Languages: German"). Unknown ids resolve to None."""
+    try:
+        row = calibre_db.session.query(db.Languages).filter(db.Languages.id == book_id).first()
+    except Exception:
+        return None
+    if row is None:
+        return None
+    try:
+        return isoLanguages.get_language_name(get_locale(), row.lang_code)
+    except Exception:
+        return row.lang_code
 
 
 @opds.route("/opds/shelfindex")
@@ -1179,7 +1234,23 @@ def render_xml_dataset(data_table, book_id):
                                                   getattr(db.Books, data_table.__tablename__).any(data_table.id == book_id),
                                                   [db.Books.timestamp.desc()],
                                                   True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination,
+                               feed_title=_feed_title_with_name(_dataset_display_name(data_table, book_id)))
+
+
+def _dataset_display_name(data_table, book_id):
+    """Display name of the entity selected by a by-id detail feed, for the
+    qualified feed title — an author's name, a tag, "4.5 Stars". Unknown ids
+    resolve to None (the caller keeps the bare parent title)."""
+    try:
+        row = calibre_db.session.query(data_table).filter(data_table.id == book_id).first()
+    except Exception:
+        return None
+    if row is None:
+        return None
+    if data_table is db.Ratings:
+        return _("{} Stars").format(_format_opds_rating(row.rating / 2))
+    return getattr(row, 'name', None) or getattr(row, 'sort', None)
 
 
 def render_element_index(database_column, linked_table, folder):
