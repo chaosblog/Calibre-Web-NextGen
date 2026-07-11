@@ -28,6 +28,7 @@ exercise the actual `order_authors` method, not just AST shape.
 import ast
 import logging
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import MagicMock
 
 import pytest
@@ -176,6 +177,32 @@ class TestAuthorSortDriftDedupBehavioral:
         ], list_return=True, combined=False)
         assert "Kosztolányi Dezső" in cps_db._AUTHOR_SORT_DRIFT_WARNED
         assert len(cps_db._AUTHOR_SORT_DRIFT_WARNED) == 4
+
+    def test_warning_identifies_affected_book(self, monkeypatch):
+        """The recovery warning must identify the exact book whose
+        ``Books.author_sort`` value drifted so an operator can repair it."""
+        from cps import db as cps_db
+
+        cps_db._AUTHOR_SORT_DRIFT_WARNED.clear()
+        warning = MagicMock()
+        monkeypatch.setattr(cps_db.log, "warning", warning)
+
+        instance = cps_db.CalibreDB.__new__(cps_db.CalibreDB)
+        instance.session = MagicMock()
+        instance.ensure_session = lambda: None
+        book = SimpleNamespace(
+            id=801,
+            title="The Mismatched Book",
+            author_sort="Missing, Author",
+            authors=[SimpleNamespace(id=1, name="Author", sort="Author, Linked")],
+        )
+
+        instance.order_authors([book], list_return=True, combined=False)
+
+        warning.assert_called_once()
+        rendered = warning.call_args.args[0] % warning.call_args.args[1:]
+        assert "801" in rendered
+        assert "The Mismatched Book" in rendered
 
     def test_continue_preserves_other_authors_ordering_for_same_book(self):
         """A book with TWO linked authors — one whose sort is referenced

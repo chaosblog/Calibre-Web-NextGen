@@ -1588,10 +1588,13 @@ class CalibreDB:
                         _AUTHOR_SORT_DRIFT_WARNED.add(auth)
                         log.warning(
                             "Author sort '%s' from Books.author_sort has no "
-                            "match in linked authors. Falling back to "
-                            "Authors.id order for this author. To fix: edit "
-                            "the author in the admin UI so Authors.sort "
-                            "matches.", auth)
+                            "match in linked authors for book %s ('%s'). "
+                            "Falling back to Authors.id order for this "
+                            "author. To repair the mismatch, edit this "
+                            "book's Authors field so its author sort is "
+                            "regenerated, or correct the book in Calibre.",
+                            auth, getattr(book, 'id', 'unknown'),
+                            getattr(book, 'title', 'untitled'))
                     continue
                 authors_ordered.append(ordered)
                 if ordered.id in ids_remaining:
