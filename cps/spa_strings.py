@@ -263,6 +263,13 @@ _("{label} hidden")
 _("{label} restored")
 _("Could not save sidebar. Please try again.")
 
+# #780 / #665 — manual library scan button in the catalog toolbar (Catalog.tsx).
+# The SPA had no equivalent of the classic header's "Refresh Library" action.
+# Deliberately a distinct (lowercase-l) msgid from the classic "Refresh Library"
+# so the button can read in sentence case; anchored so the auto-translation job
+# keeps it across re-extracts.
+_("Refresh library")
+
 
 # ==== BEGIN AUTOGEN (scripts/extract_spa_strings.py --write) ====
 # Auto-anchored SPA-only msgids — every t('literal') in frontend/src that

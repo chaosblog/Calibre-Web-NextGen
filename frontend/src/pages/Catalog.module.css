@@ -298,3 +298,53 @@
   cursor: pointer;
   flex: none;
 }
+
+/* ---- Manual library refresh button (#780 / #665) -------------------------- */
+/* Mirrors the view-settings gear: a 38×38 icon button so it matches the
+   neighbouring toolbar controls and wraps with them on narrow screens. */
+.refreshBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface-3);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+.refreshBtn:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.refreshBtn:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+/* Spin the RefreshCw glyph while a scan is in flight (same cadence as the
+   CoverPicker refresh spinner). */
+.refreshIconSpin {
+  animation: cpspin 1s linear infinite;
+}
+@keyframes cpspin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .refreshIconSpin { animation: none; }
+}
+
+/* Inline scan status (aria-live polite). Sits between the toolbar and the grid. */
+.refreshStatus,
+.refreshStatusError {
+  margin: 0 0 var(--sp-4);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+.refreshStatusError {
+  color: var(--danger);
+}

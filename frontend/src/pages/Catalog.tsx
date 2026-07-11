@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Link, useSearch } from 'wouter';
-import { Search, ChevronLeft, SlidersHorizontal, ListChecks, Settings } from 'lucide-react';
+import { Search, ChevronLeft, SlidersHorizontal, ListChecks, Settings, RefreshCw } from 'lucide-react';
 import { useIntersectionObserver } from '../lib/useIntersectionObserver';
 import { BookCard } from '../components/BookCard';
 import { BulkBar } from '../components/BulkBar';
@@ -9,7 +10,7 @@ import { EmptyState } from '../components/EmptyState';
 import { DiscoverSection } from '../components/DiscoverSection';
 import { useBooks, useEntityList, ENTITY_PLURAL, useMe } from '../lib/queries';
 import type { EntityKind, ReadFilter, DiscoveryView } from '../lib/queries';
-import type { Book } from '../lib/api';
+import { apiPost, apiGet, type Book } from '../lib/api';
 import { saveCatalog, loadCatalog } from '../lib/scrollCache';
 import { usePersistentBool } from '../lib/usePersistentBool';
 import { useT } from '../lib/i18n';
@@ -87,8 +88,87 @@ function dedupAppend(prev: Book[], next: Book[]): Book[] {
   return [...merged, ...fresh];
 }
 
+// Manual library scan (fork #780 / #665). The new UI had no equivalent of the
+// classic header's "Refresh Library" button, so users who drop new files into
+// the ingest folder had no way to trigger a re-scan from the SPA. POST
+// /cwa-library-refresh starts a background ingest scan (csrf-exempt, session-
+// authed — note these routes are NOT under /api/v1, so apiPost/apiGet only add
+// the reverse-proxy mount prefix + credentials). We then poll
+// /cwa-library-refresh/messages roughly once a second until the scan posts a
+// result (or the ~2min cap elapses), then invalidate the catalog/discover/about
+// queries so newly-ingested books + counts surface without a manual reload.
+const LIBRARY_REFRESH_POLL_MS = 1000;
+const LIBRARY_REFRESH_MAX_MS = 120000;
+
+function useLibraryRefresh() {
+  const qc = useQueryClient();
+  const [isRefreshing, setRefreshing] = useState(false);
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const deadlineRef = useRef(0);
+  const inFlightRef = useRef(false);
+
+  const stop = useCallback(() => {
+    if (timerRef.current !== null) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  const refresh = useCallback(async () => {
+    setRefreshing(true);
+    setError(false);
+    setMessage('');
+    try {
+      const data = await apiPost<{ message: string }>('/cwa-library-refresh');
+      setMessage(data.message ?? '');
+      deadlineRef.current = Date.now() + LIBRARY_REFRESH_MAX_MS;
+      // Guard against a double-click leaving two intervals running.
+      stop();
+      timerRef.current = setInterval(async () => {
+        if (inFlightRef.current) return; // skip overlapping polls
+        if (Date.now() >= deadlineRef.current) {
+          stop();
+          setRefreshing(false);
+          return;
+        }
+        inFlightRef.current = true;
+        try {
+          const res = await apiGet<{ messages: string[] }>('/cwa-library-refresh/messages');
+          if (res.messages && res.messages.length > 0) {
+            stop();
+            setMessage(res.messages.join('  '));
+            setRefreshing(false);
+            // Newly scanned books / metadata should now appear in the catalog.
+            void qc.invalidateQueries({ queryKey: ['books'] });
+            void qc.invalidateQueries({ queryKey: ['discover-strip'] });
+            void qc.invalidateQueries({ queryKey: ['about'] });
+          }
+        } catch {
+          // A transient poll failure is rare (the endpoint is an in-memory read);
+          // keep polling until the deadline rather than aborting the scan.
+        } finally {
+          inFlightRef.current = false;
+        }
+      }, LIBRARY_REFRESH_POLL_MS);
+    } catch (err) {
+      stop();
+      setRefreshing(false);
+      setError(true);
+      setMessage(err instanceof Error ? err.message : '');
+    }
+  }, [qc, stop]);
+
+  // Clean up the poll interval if the catalog unmounts mid-scan.
+  useEffect(() => () => stop(), [stop]);
+
+  return { isRefreshing, message, error, refresh };
+}
+
 export function Catalog({ entityKind, entityId, view }: CatalogProps) {
   const t = useT();
+  const libraryRefresh = useLibraryRefresh();
   const filtered = !!entityKind;
   const isView = !!view;
   const isSeries = entityKind === 'series';
@@ -378,6 +458,20 @@ export function Catalog({ entityKind, entityId, view }: CatalogProps) {
           <span className={styles.selectLabel}>{selecting ? t('Done') : t('Select')}</span>
         </button>
 
+        {/* Manual library scan (fork #780 / #665) — the SPA equivalent of the
+            classic header's "Refresh Library" button. Spins while the background
+            ingest scan runs; the result is announced in the status line below. */}
+        <button
+          type="button"
+          className={styles.refreshBtn}
+          onClick={() => { void libraryRefresh.refresh(); }}
+          disabled={libraryRefresh.isRefreshing}
+          title={t('Refresh library')}
+          aria-label={t('Refresh library')}
+        >
+          <RefreshCw size={15} className={libraryRefresh.isRefreshing ? styles.refreshIconSpin : undefined} />
+        </button>
+
         {/* View settings (library landing only) — currently houses the Discover
             section toggle; a natural home for future per-view preferences. */}
         {!hideLibraryControls && (
@@ -410,6 +504,18 @@ export function Catalog({ entityKind, entityId, view }: CatalogProps) {
           </div>
         )}
       </div>
+
+      {/* Library-scan status (aria-live so the "please wait" → "complete"
+          transition is announced, SC 4.1.3). Hidden when idle + empty. */}
+      {(libraryRefresh.isRefreshing || libraryRefresh.message) && (
+        <p
+          className={libraryRefresh.error ? styles.refreshStatusError : styles.refreshStatus}
+          role="status"
+          aria-live="polite"
+        >
+          {libraryRefresh.message}
+        </p>
+      )}
 
       {/* Discover: random picks, library landing only (not while searching). */}
       {!hideLibraryControls && !search && !discoverHidden && (

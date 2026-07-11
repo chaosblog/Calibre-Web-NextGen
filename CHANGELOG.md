@@ -18,6 +18,7 @@ is for things you can see or feel when running the app.
 
 ### Added
 
+- **The new UI now has a Refresh library button, so a manual re-scan is one click away again.** The redesigned library page shipped without any equivalent of the classic header's "Refresh Library" action, so after dropping new files into the ingest folder there was no way to trigger a scan from the new UI — the books just didn't appear until the next automatic sweep. The library toolbar now has a refresh button that starts the background scan, shows a status line while it runs, and refreshes the grid so newly-added books show up. Thanks to the reporters (#780, #665). ([#780](https://github.com/new-usemame/Calibre-Web-NextGen/issues/780), [#665](https://github.com/new-usemame/Calibre-Web-NextGen/issues/665))
 - **The new UI's book editor suggests existing tags, authors, series, publishers, and languages as you type again.** When you edit a book's metadata in the redesigned interface, each of these fields now offers a dropdown of values already in your library, so a typo no longer quietly creates a near-duplicate tag (`sci-fi` vs `scifi`) or series. Pick from the list, or keep typing to enter a brand-new value — the classic editor's autocomplete is back. Thanks to @magdalar for the report. ([#741](https://github.com/new-usemame/Calibre-Web-NextGen/issues/741), [#778](https://github.com/new-usemame/Calibre-Web-NextGen/issues/778), [#689](https://github.com/new-usemame/Calibre-Web-NextGen/issues/689))
 
 ### Fixed
