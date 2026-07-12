@@ -2,18 +2,13 @@ import { test, expect, Page } from '@playwright/test';
 import { collectPageErrors, assertNoPageErrors } from './utils';
 
 /*
- * Infinite scrolling on the book lists (adopted from community PR #735 by
- * @kurtlieber). The old lists ended in a "Load more" button; now a sentinel at
- * the bottom auto-loads the next page as it scrolls into view.
+ * Infinite scrolling on the library grid uses a sentinel to auto-load the next
+ * page. A persistent "Load more" button is its reachability fallback when an
+ * observer is unavailable or never delivers an intersecting entry.
  *
- * Driven against the Table view: unlike the Library grid (which floats a
- * Discover carousel of extra book links above the paginated grid), the Table is
- * a single paginated list, so every book link on the page is a real row — a
- * clean count. It's one of the five surfaces the shared hook was wired into.
- *
- * This asserts the user-visible contract end-to-end: no "Load more" button
- * remains, scrolling appends the next page(s) up to the full total, it never
- * duplicates a book, and the console stays clean.
+ * The tests hide the optional Discover carousel so the grid's book links have a
+ * clean count. They assert both paths: the button works when IntersectionObserver
+ * never fires, and scrolling the real sentinel still auto-appends a page.
  *
  * Needs more than one page of books. CI's E2E job seeds a single book, so this
  * skips there; it runs for real against any library with >24 books (the local
@@ -30,45 +25,84 @@ async function totalBooks(page: Page): Promise<number> {
   return body.total ?? 0;
 }
 
-function rowHrefs(page: Page): Promise<string[]> {
-  return page.locator('table a[href*="/book/"]').evaluateAll((els) =>
+function gridBookLinks(page: Page) {
+  // Quick-edit links end in /edit; each card's primary link ends in /book/<id>.
+  return page.locator('main a[href*="/book/"]:not([href$="/edit"])');
+}
+
+function gridBookHrefs(page: Page): Promise<string[]> {
+  return gridBookLinks(page).evaluateAll((els) =>
     els.map((e) => (e as HTMLAnchorElement).getAttribute('href') || ''),
   );
 }
 
 test.describe('library infinite scroll', () => {
-  test('scrolling appends pages up to the full total, no button, no dupes', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
+    // Keep the optional Discover links out of the book-grid count.
+    await page.addInitScript(() => localStorage.setItem('cwng_discover_hidden_v1', 'true'));
+  });
+
+  test('Load more reaches the full library when IntersectionObserver never fires (#704)', async ({ page }) => {
+    await page.addInitScript(() => {
+      class NeverIntersectingObserver {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+        takeRecords() { return []; }
+      }
+      window.IntersectionObserver = NeverIntersectingObserver as unknown as typeof IntersectionObserver;
+    });
+
     const errors = collectPageErrors(page);
-    await page.goto('/app/table');
-    await expect(page.locator('table a[href*="/book/"]').first()).toBeVisible();
+    await page.goto('/app');
+    await expect(gridBookLinks(page).first()).toBeVisible();
 
     const total = await totalBooks(page);
     test.skip(total <= PER_PAGE, `library has ${total} books (≤ one page) — nothing to paginate`);
 
-    // The button-driven affordance is gone; loading is scroll-driven now.
-    await expect(page.getByRole('button', { name: /load more/i })).toHaveCount(0);
+    const loadMore = page.getByRole('button', { name: 'Load more' });
+    await expect(loadMore).toBeEnabled();
 
-    const firstPage = await rowHrefs(page);
-    expect(firstPage.length, 'first render shows exactly one page of rows').toBe(PER_PAGE);
+    const firstPage = await gridBookHrefs(page);
+    expect(firstPage.length, 'first render shows exactly one page of cards').toBe(PER_PAGE);
 
-    // Scroll repeatedly; each pass pulls the next page as the sentinel enters
-    // view. Stop when every book is loaded or we stop making progress.
+    // The stub never reports an intersection, so every page advance below is
+    // evidence that the visible, keyboard-operable fallback requested it.
     let count = firstPage.length;
-    for (let i = 0; i < 8 && count < total; i++) {
-      // Scroll the last row into view so the sentinel below it enters the
-      // viewport, whichever ancestor actually scrolls.
-      await page.locator('table a[href*="/book/"]').last().scrollIntoViewIfNeeded();
+    for (let i = 0; i < Math.ceil(total / PER_PAGE) && count < total; i++) {
+      await expect(loadMore).toBeEnabled();
+      await loadMore.click();
       await expect
-        .poll(async () => (await rowHrefs(page)).length, { timeout: 8_000 })
+        .poll(async () => (await gridBookHrefs(page)).length, { timeout: 8_000 })
         .toBeGreaterThan(count);
-      count = (await rowHrefs(page)).length;
-      // One page at a time — never overshoot the running total by more than a page.
+      count = (await gridBookHrefs(page)).length;
       expect(count).toBeLessThanOrEqual(total);
     }
 
-    const finalHrefs = await rowHrefs(page);
-    expect(finalHrefs.length, 'every book loaded after scrolling').toBe(total);
-    expect(new Set(finalHrefs).size, 'no book row is duplicated across pages').toBe(finalHrefs.length);
+    const finalHrefs = await gridBookHrefs(page);
+    expect(finalHrefs.length, 'every book loaded with the fallback').toBe(total);
+    expect(new Set(finalHrefs).size, 'no book card is duplicated across pages').toBe(finalHrefs.length);
+
+    assertNoPageErrors(errors);
+  });
+
+  test('scrolling the sentinel still auto-appends a page', async ({ page }) => {
+    const errors = collectPageErrors(page);
+    await page.goto('/app');
+    await expect(gridBookLinks(page).first()).toBeVisible();
+
+    const total = await totalBooks(page);
+    test.skip(total <= PER_PAGE, `library has ${total} books (≤ one page) — nothing to paginate`);
+
+    const before = (await gridBookHrefs(page)).length;
+    expect(before, 'first render shows exactly one page of cards').toBe(PER_PAGE);
+
+    // The button lives in the observer target; scroll its parent (the sentinel)
+    // into view and let the real observer request the next page.
+    await page.getByRole('button', { name: 'Load more' }).locator('xpath=..').scrollIntoViewIfNeeded();
+    await expect
+      .poll(async () => (await gridBookHrefs(page)).length, { timeout: 8_000 })
+      .toBeGreaterThan(before);
 
     assertNoPageErrors(errors);
   });
