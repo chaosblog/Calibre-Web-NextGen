@@ -64,6 +64,12 @@ _("More by {name}")
 _("Merge {n} books into the first selected? The others are removed after their formats are copied over.")
 _("Apply to {n} books")
 
+# #736 cross-screen theme sweep — accessible names for the smart-shelf rule
+# selects (previously unlabeled -> axe select-name critical).
+_("Match condition")
+_("Rule field")
+_("Rule operator")
+
 # #736 — per-user theme picker
 _("Appearance")
 _("Theme")
