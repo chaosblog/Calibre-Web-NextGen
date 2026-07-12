@@ -63,7 +63,9 @@
 }
 
 .fallbackMark {
-  color: var(--accent);
+  /* --accent-text (not --accent): small accent text must clear 4.5:1 on the
+     card surface in every theme; the raw --accent fill is only ~3:1 on light. */
+  color: var(--accent-text);
   font-family: var(--font-display);
   font-size: var(--fs-xs);
   font-weight: var(--fw-semi);
