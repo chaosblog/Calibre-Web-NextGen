@@ -5002,7 +5002,7 @@ msgstr "Mehr laden"
 #: cps/templates/config_edit.html cps/templates/cwa_settings.html
 #: cps/templates/read.html
 msgid "Loading"
-msgstr "Lade"
+msgstr "Wird geladen…"
 
 #: cps/spa_strings.py
 msgid "Loading new Discover picks."
